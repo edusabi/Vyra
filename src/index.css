@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700;800;900&display=swap');
+
+:root {
+  /* Cores Oficiais VYRA - Extraídas do Brandbook */
+  --vyra-black: #0D0D0D;      /* Preto Oficial */
+  --vyra-graphite: #1B1B1B;   /* Grafite */
+  --vyra-gray: #A6A6A6;       /* Cinza Claro */
+  --vyra-neon: #A8FF00;       /* Verde Vyra */
+  --vyra-white: #FFFFFF;      /* Branco (Bordas e Textos de destaque) */
+
+  /* Gradientes e Sombras Profissionais */
+  --vyra-bg-gradient: radial-gradient(circle at top, #1B1B1B 0%, #0D0D0D 60%);
+  --vyra-border: rgba(166, 166, 166, 0.15); /* Borda sutil baseada no Cinza Claro */
+  --vyra-neon-glow: rgba(168, 255, 0, 0.15);
+
+  /* Tipografia */
+  --font-main: 'Raleway', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--vyra-black);
+  color: var(--vyra-white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar premium */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--vyra-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--vyra-graphite);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vyra-neon);
+}
