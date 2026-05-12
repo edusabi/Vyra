@@ -1,20 +1,33 @@
-/* CONTAINER E NAVBAR */
+/* =========================================================
+   VYRA PERFORMANCE — FULL CSS
+========================================================= */
+
+/* =========================
+   CONTAINER / BASE
+========================= */
+
 .container {
   width: 100%;
   overflow-x: hidden;
+  background: #050505;
+  color: var(--vyra-white);
 }
+
+/* =========================
+   HEADER / NAVBAR
+========================= */
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 5%;
-  background-color: rgba(13, 13, 13, 0.95);
-  backdrop-filter: blur(10px);
+  background-color: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--vyra-border);
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 999;
 }
 
 .logoContainer {
@@ -24,8 +37,8 @@
 }
 
 .logoVyra {
-  font-weight: 900;
   font-size: 1.8rem;
+  font-weight: 900;
   letter-spacing: 2px;
   color: var(--vyra-white);
 }
@@ -34,27 +47,21 @@
   font-size: 0.55rem;
   letter-spacing: 4px;
   color: var(--vyra-gray);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .nav {
-  display: none; /* Em mobile esconde, mostra no hover/desktop */
-}
-
-@media (min-width: 768px) {
-  .nav {
-    display: flex;
-    gap: 2.5rem;
-  }
+  display: flex;
+  gap: 2.5rem;
 }
 
 .nav a {
   text-decoration: none;
   color: var(--vyra-gray);
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-weight: 700;
+  font-size: 0.82rem;
   text-transform: uppercase;
-  transition: color 0.3s ease;
+  transition: 0.3s;
 }
 
 .nav a:hover {
@@ -65,126 +72,252 @@
   background: transparent;
   border: 1px solid var(--vyra-neon);
   color: var(--vyra-neon);
-  padding: 0.6rem 1.2rem;
-  font-family: var(--font-main);
-  font-weight: 700;
+  padding: 0.8rem 1.4rem;
+  font-weight: 800;
   text-transform: uppercase;
-  font-size: 0.8rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: 0.3s;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
 }
 
 .navBtn:hover {
   background: var(--vyra-neon);
   color: var(--vyra-black);
+  box-shadow: 0 0 20px rgba(162,255,0,0.3);
 }
 
-/* HERO SECTION */
-.hero {
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--vyra-bg-gradient);
-  padding: 4rem 5%;
-  text-align: center;
+/* =========================
+   CARROSSEL HERO
+========================= */
+
+.carouselSection {
+  width: 100%;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(162,255,0,0.08), transparent 40%),
+    var(--vyra-bg-gradient);
+  position: relative;
+  overflow: hidden;
   border-bottom: 1px solid var(--vyra-graphite);
 }
 
-.heroContent {
-  max-width: 800px;
+.carouselContainer {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
 }
 
-.slogan {
-  color: var(--vyra-gray);
-  font-weight: 800;
-  letter-spacing: 3px;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
+.carouselContent {
+  width: 100%;
+  height: 100%;
 }
 
-.highlight {
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8%;
+}
+
+.activeSlide {
+  opacity: 1;
+  z-index: 10;
+}
+
+.slideInfo {
+  max-width: 520px;
+  z-index: 20;
+}
+
+.slideNumber {
   color: var(--vyra-neon);
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  margin-bottom: 1rem;
+  display: block;
 }
 
-.heroTitle {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
+.slideTitle {
+  font-size: clamp(3rem, 7vw, 5.5rem);
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 0.95;
   margin-bottom: 1.5rem;
+}
+
+.neonText {
+  color: var(--vyra-neon);
 }
 
 .heroDesc {
   color: var(--vyra-gray);
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  line-height: 1.8;
+  font-size: 1rem;
+  max-width: 500px;
 }
 
 .ctaButton {
+  margin-top: 2rem;
   display: inline-block;
-  background-color: var(--vyra-neon);
+  background: var(--vyra-neon);
   color: var(--vyra-black);
   text-decoration: none;
   padding: 1.2rem 3rem;
-  font-weight: 800;
-  font-size: 1.1rem;
-  letter-spacing: 1px;
+  font-weight: 900;
   text-transform: uppercase;
-  transition: all 0.3s ease;
+  transition: 0.3s;
+  letter-spacing: 1px;
 }
 
 .ctaButton:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px var(--vyra-neon-glow);
+  box-shadow: 0 10px 30px rgba(162,255,0,0.25);
 }
 
-/* TECNOLOGIA (GRID DE ÍCONES) */
+.imageContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mockupImage {
+  width: 430px;
+  height: 540px;
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.7),
+    0 0 60px rgba(162,255,0,0.04);
+  transition: transform 0.5s ease;
+}
+
+.activeSlide .mockupImage {
+  transform: scale(1.03);
+}
+
+.placeholderLabel {
+  color: rgba(255,255,255,0.25);
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+
+/* =========================
+   CONTROLES
+========================= */
+
+.arrowLeft,
+.arrowRight {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  border: none;
+  background: rgba(255,255,255,0.04);
+  color: white;
+  cursor: pointer;
+  padding: 1.5rem 1rem;
+  font-size: 2rem;
+  transition: 0.3s;
+}
+
+.arrowLeft:hover,
+.arrowRight:hover {
+  color: var(--vyra-neon);
+  background: rgba(255,255,255,0.08);
+}
+
+.arrowLeft {
+  left: 20px;
+}
+
+.arrowRight {
+  right: 20px;
+}
+
+.dots {
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  z-index: 100;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid var(--vyra-neon);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.activeDot {
+  background: var(--vyra-neon);
+  box-shadow: 0 0 10px var(--vyra-neon);
+}
+
+/* =========================
+   FEATURES
+========================= */
+
 .features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
-  padding: 4rem 5%;
-  background-color: var(--vyra-black);
+  padding: 5rem 5%;
+  background: var(--vyra-black);
+  border-top: 1px solid var(--vyra-graphite);
   border-bottom: 1px solid var(--vyra-graphite);
 }
 
 .featureItem {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 2rem;
   border: 1px solid transparent;
-  transition: border-color 0.3s ease;
+  transition: 0.3s;
 }
 
 .featureItem:hover {
-  border-color: var(--vyra-graphite);
+  border-color: var(--vyra-neon);
+  background: rgba(255,255,255,0.02);
 }
 
 .icon {
   font-size: 2.5rem;
-  display: block;
   margin-bottom: 1rem;
+  display: block;
 }
 
 .featureItem h3 {
   font-size: 0.9rem;
-  font-weight: 800;
-  color: var(--vyra-white);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
   letter-spacing: 1px;
 }
 
 .featureItem p {
-  font-size: 0.85rem;
   color: var(--vyra-gray);
+  font-size: 0.85rem;
 }
 
-/* PRODUTOS */
+/* =========================
+   PRODUCTS
+========================= */
+
 .products {
   padding: 6rem 5%;
-  background-color: var(--vyra-graphite);
+  background: var(--vyra-graphite);
 }
 
 .sectionHeader {
@@ -200,111 +333,95 @@
 .neonLine {
   width: 60px;
   height: 4px;
-  background-color: var(--vyra-neon);
+  background: var(--vyra-neon);
   margin-top: 1rem;
 }
 
 .productGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 .productCard {
-  background-color: var(--vyra-black);
+  background: var(--vyra-black);
   border: 1px solid var(--vyra-border);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
+  transition: 0.3s;
 }
 
 .productCard:hover {
   border-color: var(--vyra-neon);
   transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .imagePlaceholder {
   width: 100%;
   aspect-ratio: 4/5;
-  background-color: #151515;
+  background: #151515;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid var(--vyra-graphite);
 }
 
 .mockupText {
   color: var(--vyra-gray);
   font-size: 0.9rem;
-  font-weight: 600;
   letter-spacing: 2px;
 }
 
 .cardContent {
   padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
 }
 
 .tag {
-  font-size: 0.7rem;
   color: var(--vyra-neon);
+  font-size: 0.7rem;
+  font-weight: 900;
   text-transform: uppercase;
-  font-weight: 800;
-  letter-spacing: 1px;
   margin-bottom: 0.8rem;
+  display: block;
 }
 
 .productName {
   font-size: 1.1rem;
-  font-weight: 700;
   margin-bottom: 1.5rem;
-  color: var(--vyra-white);
 }
 
 .cardFooter {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: auto;
-  border-top: 1px solid var(--vyra-graphite);
-  padding-top: 1rem;
 }
 
 .price {
   font-size: 1.2rem;
-  font-weight: 800;
-  color: var(--vyra-white);
+  font-weight: 900;
 }
 
 .buyIcon {
-  background: var(--vyra-graphite);
-  color: var(--vyra-white);
-  border: none;
-  width: 35px;
-  height: 35px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  font-size: 1.2rem;
+  border: none;
+  background: var(--vyra-graphite);
+  color: white;
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: 0.3s;
 }
 
-.productCard:hover .buyIcon {
+.buyIcon:hover {
   background: var(--vyra-neon);
-  color: var(--vyra-black);
+  color: black;
 }
 
-/* SOBRE A MARCA */
+/* =========================
+   ABOUT
+========================= */
+
 .about {
   padding: 6rem 5%;
-  background-color: var(--vyra-black);
-  border-top: 1px solid var(--vyra-graphite);
   text-align: center;
+  background: var(--vyra-black);
 }
 
 .aboutContent {
@@ -314,242 +431,201 @@
 
 .aboutContent h2 {
   font-size: 2rem;
-  font-weight: 900;
   margin-bottom: 2rem;
-  letter-spacing: 2px;
 }
 
 .aboutContent p {
   color: var(--vyra-gray);
-  font-size: 1.1rem;
+  line-height: 1.8;
   margin-bottom: 1.5rem;
-}
-
-.aboutContent strong {
-  color: var(--vyra-white);
 }
 
 .aboutTags {
   margin-top: 3rem;
-  font-size: 0.9rem;
-  font-weight: 800;
   color: var(--vyra-neon);
-  letter-spacing: 3px;
+  font-weight: 900;
+  letter-spacing: 2px;
 }
 
-.aboutTags span {
-  color: var(--vyra-white);
-}
+/* =========================
+   FOOTER
+========================= */
 
-/* FOOTER */
 .footer {
   padding: 4rem 5%;
-  background-color: #050505;
+  background: #050505;
   border-top: 1px solid var(--vyra-graphite);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.footerBrand {
   text-align: center;
 }
 
 .footerLogo {
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   font-weight: 900;
-  letter-spacing: 4px;
 }
 
 .sloganFooter {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 2px;
   color: var(--vyra-gray);
-}
-
-.footerLinks {
-  text-align: center;
-  color: var(--vyra-gray);
-  font-size: 0.9rem;
-}
-
-.footerLinks a {
-  color: var(--vyra-neon);
-  text-decoration: none;
-  font-weight: 600;
-  display: block;
   margin-top: 0.5rem;
 }
 
-/* CARROSSEL */
-
-.carouselSection {
-  width: 100%;
-  height: 85vh;
-  background: var(--vyra-bg-gradient);
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid var(--vyra-graphite);
-}
-
-.carouselContainer {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.carouselContent {
-  width: 100%;
-  height: 100%;
-}
-
-.slide {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10%;
-}
-
-.activeSlide {
-  opacity: 1;
-  z-index: 10;
-}
-
-.slideInfo {
-  max-width: 500px;
-  z-index: 20;
-  text-align: left;
-}
-
-.slideNumber {
-  color: var(--vyra-neon);
-  font-weight: 800;
-  font-size: 1.2rem;
-  letter-spacing: 4px;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.slideTitle {
-  font-size: clamp(3rem, 7vw, 5rem);
-  font-weight: 900;
-  line-height: 1;
-  margin-bottom: 1.5rem;
-}
-
-.neonText {
-  color: var(--vyra-neon);
-}
-
-.ctaCarousel {
+.footerLinks {
   margin-top: 2rem;
-  background: transparent;
-  border: 1px solid var(--vyra-white);
-  color: var(--vyra-white);
-  padding: 1rem 2.5rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s;
+  color: var(--vyra-gray);
 }
 
-.ctaCarousel:hover {
-  background: var(--vyra-white);
-  color: var(--vyra-black);
-}
-
-.imageContainer {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.mockupImage {
-  width: 450px;
-  height: 550px;
-  border-radius: 4px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: transform 0.5s ease;
-}
-
-.activeSlide .mockupImage {
-  transform: scale(1.05);
-}
-
-.placeholderLabel {
-  color: rgba(255,255,255,0.3);
-  font-weight: 800;
+.copyright {
+  margin-top: 2rem;
+  color: #666;
   font-size: 0.8rem;
-  letter-spacing: 2px;
 }
 
-/* Controles */
-.arrowLeft, .arrowRight {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.3);
-  border: none;
-  color: var(--vyra-white);
-  font-size: 2rem;
-  padding: 2rem 1rem;
-  cursor: pointer;
-  z-index: 100;
-  transition: color 0.3s;
-}
+/* =========================================================
+   RESPONSIVO
+========================================================= */
 
-.arrowLeft:hover, .arrowRight:hover {
-  color: var(--vyra-neon);
-}
+@media (max-width: 992px) {
 
-.arrowLeft { left: 20px; }
-.arrowRight { right: 20px; }
+  .slide {
+    flex-direction: column-reverse;
+    justify-content: center;
+    text-align: center;
+    gap: 3rem;
+    padding: 7rem 5% 6rem;
+  }
 
-.dots {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 15px;
-  z-index: 100;
-}
+  .slideInfo {
+    max-width: 100%;
+  }
 
-.dot {
-  width: 12px;
-  height: 12px;
-  border: 1px solid var(--vyra-neon);
-  border-radius: 50%;
-  cursor: pointer;
-}
+  .heroDesc {
+    margin: 0 auto;
+  }
 
-.activeDot {
-  background: var(--vyra-neon);
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mockupImage {
+    width: 340px;
+    height: 430px;
+  }
 }
 
 @media (max-width: 768px) {
-  .slide {
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    padding-top: 4rem;
+
+  .header {
+    padding: 1rem 1.2rem;
   }
-  .slideInfo { text-align: center; margin-bottom: 3rem; }
-  .mockupImage { width: 280px; height: 350px; }
+
+  .nav {
+    display: none;
+  }
+
+  .logoVyra {
+    font-size: 1.5rem;
+  }
+
+  .logoSub {
+    font-size: 0.48rem;
+  }
+
+  .navBtn {
+    padding: 0.7rem 1rem;
+    font-size: 0.7rem;
+  }
+
+  .carouselSection {
+    min-height: 100vh;
+  }
+
+  .slide {
+    padding: 6rem 1.5rem 5rem;
+    gap: 2rem;
+  }
+
+  .slideTitle {
+    font-size: clamp(2.2rem, 11vw, 3.5rem);
+  }
+
+  .slideNumber {
+    font-size: 0.75rem;
+  }
+
+  .heroDesc {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    max-width: 320px;
+  }
+
+  /* REMOVE BOTÃO MOBILE */
+  .ctaButton {
+    display: none;
+  }
+
+  .mockupImage {
+    width: 260px;
+    height: 320px;
+  }
+
+  .arrowLeft,
+  .arrowRight {
+    display: none;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+    padding: 4rem 1.5rem;
+  }
+
+  .products,
+  .about {
+    padding: 5rem 1.5rem;
+  }
+
+  .productGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader {
+    text-align: center;
+  }
+
+  .neonLine {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dots {
+    bottom: 20px;
+  }
 }
+
+@media (max-width: 480px) {
+
+  .slide {
+    padding: 6rem 1rem 5rem;
+  }
+
+  .slideTitle {
+    font-size: 2rem;
+  }
+
+  .heroDesc {
+    font-size: 0.85rem;
+    max-width: 280px;
+  }
+
+  .mockupImage {
+    width: 220px;
+    height: 280px;
+  }
+
+  .footerLogo {
+    font-size: 1.8rem;
+  }
+}
+
