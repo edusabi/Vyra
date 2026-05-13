@@ -1,25 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect
+} from 'react';
+
 import styles from './Header.module.css';
-import { NavLink } from 'react-router-dom';
+
+import {
+  NavLink
+} from 'react-router-dom';
+
+import axios from 'axios';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // EFEITO PARA TRAVAR A ROLAGEM
-  useEffect(() => {
-    if (isMenuOpen) {
-      // Quando o menu abre, trava o scroll da página
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Quando o menu fecha, devolve o scroll da página
-      document.body.style.overflow = 'auto';
+  const [isMenuOpen, setIsMenuOpen] =
+    useState(false);
+
+  const [adminLogado, setAdminLogado] =
+    useState(false);
+
+  /*
+  ========================================
+  VERIFICAR ADMIN
+  ========================================
+  */
+
+  const verificarAdmin = async () => {
+
+    try {
+
+      await axios.get(
+        'http://localhost:3000/admin/verificar',
+        {
+          withCredentials: true
+        }
+      );
+
+      setAdminLogado(true);
+
+    } catch {
+
+      setAdminLogado(false);
+
     }
 
-    // Função de limpeza de segurança: se o componente for destruído, devolve o scroll
+  };
+
+  /*
+  ========================================
+  INIT
+  ========================================
+  */
+
+  useEffect(() => {
+
+    verificarAdmin();
+
+    /*
+    ESCUTAR LOGIN/LOGOUT
+    */
+
+    window.addEventListener(
+      'adminAuthChanged',
+      verificarAdmin
+    );
+
     return () => {
-      document.body.style.overflow = 'auto';
+
+      window.removeEventListener(
+        'adminAuthChanged',
+        verificarAdmin
+      );
+
     };
-  }, [isMenuOpen]); // O useEffect é executado toda vez que isMenuOpen muda
+
+  }, []);
+
+  /*
+  ========================================
+  TRAVAR SCROLL MENU
+  ========================================
+  */
+
+  useEffect(() => {
+
+    if (isMenuOpen) {
+      document.body.style.overflow =
+        'hidden';
+    } else {
+      document.body.style.overflow =
+        'auto';
+    }
+
+    return () => {
+      document.body.style.overflow =
+        'auto';
+    };
+
+  }, [isMenuOpen]);
+
+  /*
+  ========================================
+  MENU
+  ========================================
+  */
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -29,35 +113,157 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  /*
+  ========================================
+  LOGOUT
+  ========================================
+  */
+
+  const logout = async () => {
+
+    try {
+
+      await axios.post(
+        'http://localhost:3000/admin/logout',
+        {},
+        {
+          withCredentials: true
+        }
+      );
+
+      /*
+      ATUALIZAR HEADER
+      */
+
+      window.dispatchEvent(
+        new Event('adminAuthChanged')
+      );
+
+      /*
+      REDIRECT
+      */
+
+      window.location.href = '/';
+
+    } catch (err) {
+
+      console.log(err);
+
+    }
+
+  };
+
+  /*
+  ========================================
+  RENDER
+  ========================================
+  */
+
   return (
     <header className={styles.header}>
-      {/* 1. LOGO */}
+
+      {/* LOGO */}
+
       <div className={styles.logoContainer}>
-        <span className={styles.logoVyra}>VYRA</span>
-        <span className={styles.logoSub}>PERFORMANCE</span>
+        <span className={styles.logoVyra}>
+          VYRA
+        </span>
+
+        <span className={styles.logoSub}>
+          PERFORMANCE
+        </span>
       </div>
 
-      {/* 2. MENU DE NAVEGAÇÃO */}
-      <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
-        <NavLink to="/" onClick={closeMenu}>Home</NavLink>
-        <NavLink to="/products" onClick={closeMenu}>Produtos</NavLink>
-        <NavLink to="/about" onClick={closeMenu}>A Marca</NavLink>
+      {/* NAV */}
+
+      <nav
+        className={`
+          ${styles.nav}
+          ${isMenuOpen
+            ? styles.navOpen
+            : ''
+          }
+        `}
+      >
+
+        <NavLink
+          to="/"
+          onClick={closeMenu}
+        >
+          Home
+        </NavLink>
+
+        <NavLink
+          to="/products"
+          onClick={closeMenu}
+        >
+          Produtos
+        </NavLink>
+
+        <NavLink
+          to="/about"
+          onClick={closeMenu}
+        >
+          A Marca
+        </NavLink>
+
+        {/* ADMIN */}
+
+        {adminLogado && (
+          <NavLink
+            to="/login/admin"
+            onClick={closeMenu}
+            className={styles.adminLink}
+          >
+            Admin
+          </NavLink>
+        )}
+
       </nav>
 
-      {/* 3. BOTÃO (Agora solto no header) */}
-      <NavLink to="/products" className={styles.navBtnLink}>
-        Comprar Agora
-      </NavLink>
+      {/* RIGHT ACTIONS */}
 
-      {/* 4. TOGGLE HAMBÚRGUER (Agora solto no header) */}
-      <div 
-        className={`${styles.hamburger} ${isMenuOpen ? styles.hamburgerOpen : ''}`} 
+      <div className={styles.rightActions}>
+
+        {/* SAIR */}
+
+        {adminLogado && (
+          <button
+            onClick={logout}
+            className={styles.adminBtn}
+          style={{cursor:"pointer"}}>
+            Sair
+          </button>
+        )}
+
+        {/* COMPRAR */}
+
+        <NavLink
+          to="/products"
+          className={styles.navBtnLink}
+        >
+          Comprar Agora
+        </NavLink>
+
+      </div>
+
+      {/* HAMBURGER */}
+
+      <div
+        className={`
+          ${styles.hamburger}
+          ${isMenuOpen
+            ? styles.hamburgerOpen
+            : ''
+          }
+        `}
         onClick={toggleMenu}
       >
         <span></span>
         <span></span>
         <span></span>
       </div>
+
     </header>
   );
 };

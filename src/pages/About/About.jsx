@@ -8,8 +8,6 @@ import { FaInstagram, FaWhatsapp } from 'react-icons/fa';
 const About = () => {
   return (
     <div>
-      <Header />
-
       <section
         id="sobre"
         className={styles.about}
