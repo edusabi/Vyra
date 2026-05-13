@@ -1,0 +1,167 @@
+/* About.module.css */
+
+.about {
+  background:
+    radial-gradient(circle at top, rgba(162,255,0,0.08), transparent 40%),
+    var(--vyra-bg-gradient);
+  color: #ffffff;
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.aboutContent {
+  max-width: 800px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+}
+
+.aboutContent h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+}
+
+.aboutContent p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #b3b3b3;
+  margin: 0;
+  font-weight: 300;
+  max-width: 700px;
+}
+
+.aboutContent strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.aboutTags {
+  margin-top: 1.5rem;
+  color: #ccff00;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  word-spacing: 4px;
+}
+
+/* =========================
+   REDES SOCIAIS
+========================= */
+
+.socials {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.socialButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0.95rem 1.5rem;
+
+  border-radius: 999px;
+
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  transition: 0.3s ease;
+
+  color: #ffffff;
+}
+
+.socialButton svg {
+  font-size: 1.2rem;
+}
+
+/* INSTAGRAM */
+
+.instagram {
+  background: linear-gradient(
+    135deg,
+    #f58529,
+    #dd2a7b,
+    #8134af,
+    #515bd4
+  );
+
+  box-shadow: 0 0 20px rgba(221, 42, 123, 0.25);
+}
+
+.instagram:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 25px rgba(221, 42, 123, 0.4);
+}
+
+/* WHATSAPP */
+
+.whatsapp {
+  background: #25d366;
+
+  box-shadow: 0 0 20px rgba(37, 211, 102, 0.25);
+}
+
+.whatsapp:hover {
+  background: #1ebe5d;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 25px rgba(37, 211, 102, 0.45);
+}
+
+
+/* =========================================
+   Media Queries
+========================================= */
+
+@media (max-width: 768px) {
+
+    .socialButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .about {
+    padding: 3rem 1.5rem;
+    min-height: 50vh;
+  }
+
+  .aboutContent {
+    gap: 1.5rem;
+  }
+
+  .aboutContent h2 {
+    font-size: 1.8rem;
+  }
+
+  .aboutContent p {
+    font-size: 1rem;
+  }
+
+  .aboutTags {
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .socialButton {
+    width: 100%;
+    justify-content: center;
+  }
+}

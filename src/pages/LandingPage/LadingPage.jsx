@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './LandingPage.module.css';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import { NavLink } from 'react-router-dom';
+
 
 const Landing = () => {
+  
 
   /* =========================
      CARROSSEL
@@ -118,32 +123,9 @@ const Landing = () => {
     <div className={styles.container}>
 
       {/* =========================
-          HEADER
-      ========================= */}
-
-      <header className={styles.header}>
-
-        <div className={styles.logoContainer}>
-          <span className={styles.logoVyra}>VYRA</span>
-          <span className={styles.logoSub}>PERFORMANCE</span>
-        </div>
-
-        <nav className={styles.nav}>
-          <a href="#produtos">Produtos</a>
-          <a href="#tecnologia">Tecnologia</a>
-          <a href="#sobre">A Marca</a>
-        </nav>
-
-        <button className={styles.navBtn}>
-          Comprar Agora
-        </button>
-
-      </header>
-
-      {/* =========================
           MAIN
       ========================= */}
-
+      <Header/>
       <main>
 
         {/* =========================
@@ -202,12 +184,12 @@ const Landing = () => {
                     </p>
 
                     {/* BOTÃO SOME NO MOBILE VIA CSS */}
-                    <a
-                      href="#produtos"
+                    <NavLink
+                      to="/products"
                       className={styles.ctaButton}
                     >
                       GARANTIR O MEU
-                    </a>
+                    </NavLink>
 
                   </div>
 
@@ -314,8 +296,6 @@ const Landing = () => {
             <h2 className={styles.sectionTitle}>
               NOSSA LINHA
             </h2>
-
-            <div className={styles.neonLine}></div>
           </div>
 
           <div className={styles.productGrid}>
@@ -338,16 +318,6 @@ const Landing = () => {
                 <h3 className={styles.productName}>
                   Camisa Vyra Performance Preto
                 </h3>
-
-                <div className={styles.cardFooter}>
-                  <span className={styles.price}>
-                    R$ 119,90
-                  </span>
-
-                  <button className={styles.buyIcon}>
-                    +
-                  </button>
-                </div>
 
               </div>
 
@@ -372,16 +342,6 @@ const Landing = () => {
                   Camisa Vyra Performance Chumbo
                 </h3>
 
-                <div className={styles.cardFooter}>
-                  <span className={styles.price}>
-                    R$ 119,90
-                  </span>
-
-                  <button className={styles.buyIcon}>
-                    +
-                  </button>
-                </div>
-
               </div>
 
             </div>
@@ -405,98 +365,24 @@ const Landing = () => {
                   Regata Vyra Performance Preto
                 </h3>
 
-                <div className={styles.cardFooter}>
-                  <span className={styles.price}>
-                    R$ 99,90
-                  </span>
-
-                  <button className={styles.buyIcon}>
-                    +
-                  </button>
-                </div>
 
               </div>
 
             </div>
-
-          </div>
-
-        </section>
-
-        {/* =========================
-            ABOUT
-        ========================= */}
-
-        <section
-          id="sobre"
-          className={styles.about}
-        >
-
-          <div className={styles.aboutContent}>
-
-            <h2>SOBRE A MARCA</h2>
-
-            <p>
-              A Vyra Performance nasceu
-              para movimentar pessoas que
-              buscam mais do que resultado:
-              buscam evolução constante.
-            </p>
-
-            <p>
-              Nossa composição de
-              <strong>
-                {' '}Poliamida 90% e
-                Elastano 10%
-              </strong>
-              {' '}garante um design
-              minimalista, leve e durável.
-            </p>
-
-            <div className={styles.aboutTags}>
-              <span>FORTE</span> •
-              <span> MODERNA</span> •
-              <span> AUTÊNTICA</span>
-            </div>
+              <NavLink
+                to="/products"
+                className={styles.ctaButton}
+                >
+                COMPRAR AGORA
+              </NavLink>
 
           </div>
 
         </section>
 
       </main>
-
-      {/* =========================
-          FOOTER
-      ========================= */}
-
-      <footer className={styles.footer}>
-
-        <div className={styles.footerBrand}>
-
-          <h2 className={styles.footerLogo}>
-            VYRA
-          </h2>
-
-          <p className={styles.sloganFooter}>
-            MOVE.
-            <span className={styles.neonText}>
-              {' '}EVOLVE.
-            </span>
-            {' '}REPEAT.
-          </p>
-
-        </div>
-
-        <div className={styles.footerLinks}>
-          <p>Feito no Brasil 🇧🇷</p>
-        </div>
-
-        <div className={styles.copyright}>
-          &copy; {new Date().getFullYear()} VYRA.
-          Todos os direitos reservados.
-        </div>
-
-      </footer>
+        
+        <Footer/>
 
     </div>
   );

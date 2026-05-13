@@ -1,3 +1,4 @@
+
 /* =========================================================
    VYRA PERFORMANCE — FULL CSS
 ========================================================= */
@@ -11,80 +12,6 @@
   overflow-x: hidden;
   background: #050505;
   color: var(--vyra-white);
-}
-
-/* =========================
-   HEADER / NAVBAR
-========================= */
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 5%;
-  background-color: rgba(10, 10, 10, 0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--vyra-border);
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-.logoContainer {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-}
-
-.logoVyra {
-  font-size: 1.8rem;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--vyra-white);
-}
-
-.logoSub {
-  font-size: 0.55rem;
-  letter-spacing: 4px;
-  color: var(--vyra-gray);
-  font-weight: 700;
-}
-
-.nav {
-  display: flex;
-  gap: 2.5rem;
-}
-
-.nav a {
-  text-decoration: none;
-  color: var(--vyra-gray);
-  font-weight: 700;
-  font-size: 0.82rem;
-  text-transform: uppercase;
-  transition: 0.3s;
-}
-
-.nav a:hover {
-  color: var(--vyra-neon);
-}
-
-.navBtn {
-  background: transparent;
-  border: 1px solid var(--vyra-neon);
-  color: var(--vyra-neon);
-  padding: 0.8rem 1.4rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: 0.3s;
-  font-size: 0.75rem;
-  letter-spacing: 1px;
-}
-
-.navBtn:hover {
-  background: var(--vyra-neon);
-  color: var(--vyra-black);
-  box-shadow: 0 0 20px rgba(162,255,0,0.3);
 }
 
 /* =========================
@@ -414,70 +341,6 @@
   color: black;
 }
 
-/* =========================
-   ABOUT
-========================= */
-
-.about {
-  padding: 6rem 5%;
-  text-align: center;
-  background: var(--vyra-black);
-}
-
-.aboutContent {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.aboutContent h2 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
-.aboutContent p {
-  color: var(--vyra-gray);
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
-}
-
-.aboutTags {
-  margin-top: 3rem;
-  color: var(--vyra-neon);
-  font-weight: 900;
-  letter-spacing: 2px;
-}
-
-/* =========================
-   FOOTER
-========================= */
-
-.footer {
-  padding: 4rem 5%;
-  background: #050505;
-  border-top: 1px solid var(--vyra-graphite);
-  text-align: center;
-}
-
-.footerLogo {
-  font-size: 2.3rem;
-  font-weight: 900;
-}
-
-.sloganFooter {
-  color: var(--vyra-gray);
-  margin-top: 0.5rem;
-}
-
-.footerLinks {
-  margin-top: 2rem;
-  color: var(--vyra-gray);
-}
-
-.copyright {
-  margin-top: 2rem;
-  color: #666;
-  font-size: 0.8rem;
-}
 
 /* =========================================================
    RESPONSIVO

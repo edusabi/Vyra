@@ -1,0 +1,31 @@
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+  padding: 4rem 5%;
+  background: #050505;
+  border-top: 1px solid var(--vyra-graphite);
+  text-align: center;
+}
+
+.footerLogo {
+  font-size: 2.3rem;
+  font-weight: 900;
+}
+
+.sloganFooter {
+  color: var(--vyra-gray);
+  margin-top: 0.5rem;
+}
+
+.footerLinks {
+  margin-top: 2rem;
+  color: var(--vyra-gray);
+}
+
+.copyright {
+  margin-top: 2rem;
+  color: #666;
+  font-size: 0.8rem;
+}

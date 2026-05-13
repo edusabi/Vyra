@@ -50,3 +50,10 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--vyra-neon);
 }
+
+@media screen and (max-width: 768px) {
+  body {
+    /* Ajuste esse valor caso o seu header seja mais alto ou mais baixo */
+    padding-top: 50px; 
+  }
+}
