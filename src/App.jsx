@@ -1,7 +1,8 @@
 import {
   BrowserRouter,
   Route,
-  Routes
+  Routes,
+  useLocation
 } from 'react-router-dom'
 
 import './App.css'
@@ -12,19 +13,31 @@ import Produtos from './pages/Produtos/Produtos'
 import About from './pages/About/About'
 import Notfound from './components/Notfound/Notfound'
 import Header from './components/Header/Header'
+import BioInsta from './pages/BioInsta/BioInsta'
 
-function App() {
+function Layout() {
+
+  const location = useLocation()
+
+  // páginas onde o Header NÃO aparece
+  const hideHeaderRoutes = ['/linkBio']
+
+  const shouldHideHeader = hideHeaderRoutes.includes(location.pathname)
 
   return (
-    <BrowserRouter>
-
-      <Header />
+    <>
+      {!shouldHideHeader && <Header />}
 
       <Routes>
 
         <Route
           path='/'
           element={<LandingPage />}
+        />
+
+        <Route
+          path='/linkBio'
+          element={<BioInsta />}
         />
 
         <Route
@@ -48,7 +61,14 @@ function App() {
         />
 
       </Routes>
+    </>
+  )
+}
 
+function App() {
+  return (
+    <BrowserRouter>
+      <Layout />
     </BrowserRouter>
   )
 }

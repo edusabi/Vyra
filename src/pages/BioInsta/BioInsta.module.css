@@ -1,0 +1,131 @@
+.container {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(162,255,0,0.08), transparent 40%),
+    var(--vyra-bg-gradient);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centraliza verticalmente */
+  align-items: center; /* centraliza horizontalmente */
+
+  padding: 40px 20px;
+  font-family: var(--font-main);
+  color: var(--vyra-white);
+}
+
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  margin-bottom: 32px;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+
+  line-height: 1;
+}
+
+.logoVyra {
+  font-size: 1.8rem;
+  font-weight: 900;
+
+  letter-spacing: 2px;
+
+  color: var(--vyra-white, #fff);
+}
+
+.logoSub {
+  font-size: 0.55rem;
+
+  letter-spacing: 4px;
+
+  color: var(--vyra-gray, #aaa);
+
+  font-weight: 700;
+  padding-bottom: 1rem;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 16px;
+}
+
+.description {
+  color: var(--vyra-gray);
+  font-size: 0.9rem;
+  max-width: 280px;
+  line-height: 1.5;
+  text-align: center;
+
+  letter-spacing: .2px;
+}
+
+.linksContainer {
+  width: 100%;
+  max-width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  align-items: center;
+}
+
+.linkButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  padding: 18px;
+
+  text-align: center;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--vyra-border);
+}
+
+/* Botão principal */
+.primary {
+  background-color: var(--vyra-neon);
+  color: var(--vyra-black);
+}
+
+.primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 20px var(--vyra-neon-glow);
+  transform: translateY(-2px);
+}
+
+/* Botões secundários */
+.secondary {
+  background-color: transparent;
+  color: var(--vyra-white);
+  border: 1px solid var(--vyra-white);
+}
+
+.secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--vyra-neon);
+  color: var(--vyra-neon);
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    padding-top: 0;
+  }
+
+  .container {
+    padding: 20px;
+  }
+}
