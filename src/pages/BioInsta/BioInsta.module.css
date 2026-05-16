@@ -1,7 +1,8 @@
 .container {
   min-height: 100vh;
+  /* MELHORIA: Aumentada a opacidade do glow neon de 0.08 para 0.15 para dar mais profundidade */
   background:
-    radial-gradient(circle at top, rgba(162,255,0,0.08), transparent 40%),
+    radial-gradient(circle at top, rgba(162,255,0,0.15), transparent 40%),
     var(--vyra-bg-gradient);
 
   display: flex;
@@ -58,8 +59,10 @@
 .description {
   color: var(--vyra-gray);
   font-size: 0.9rem;
-  max-width: 280px;
-  line-height: 1.5;
+  /* MELHORIA: Aumentado o max-width de 280px para 340px e o line-height para 1.6 */
+  /* Isso evita quebras excessivas de linha e melhora muito a leitura */
+  max-width: 340px;
+  line-height: 1.6;
   text-align: center;
 
   letter-spacing: .2px;
@@ -80,6 +83,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  /* MELHORIA: Adicionado o gap para dar espaçamento entre o ícone do carrinho e o texto */
+  gap: 10px;
 
   width: 100%;
   padding: 18px;
@@ -111,7 +116,9 @@
 .secondary {
   background-color: transparent;
   color: var(--vyra-white);
-  border: 1px solid var(--vyra-white);
+  /* MELHORIA: Substituída a borda branca sólida por uma com 20% de opacidade */
+  /* Garante o contraste correto sem brigar com o botão de conversão principal */
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .secondary:hover {
