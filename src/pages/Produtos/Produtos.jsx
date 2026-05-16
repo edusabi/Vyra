@@ -1,8 +1,9 @@
-import Footer from "../../components/Footer/Footer"
+import Footer from "../../components/Footer/Footer";
+import styles from './Produtos.module.css';
 
 const Produtos = () => {
   return (
-    <div>
+    <div className={StyleSheet.produtosContainer}>
       Produtos
       <Footer/>
     </div>
