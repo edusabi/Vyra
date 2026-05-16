@@ -11,7 +11,6 @@
   justify-content: center;
   align-items: center;
   padding: 4rem 2rem;
-  margin-top: 4rem !important;
   box-sizing: border-box;
   font-family: system-ui, -apple-system, sans-serif;
 }
@@ -138,6 +137,8 @@
   .about {
     padding: 3rem 1.5rem;
     min-height: 50vh;
+    margin-top: 4rem !important;
+
   }
 
   .aboutContent {
