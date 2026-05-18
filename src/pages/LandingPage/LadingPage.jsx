@@ -269,12 +269,6 @@ const Landing = () => {
           </div>
 
           <div className={styles.featureItem}>
-            <span className={styles.icon}>☀️</span>
-            <h3>PROTEÇÃO UV 50+</h3>
-            <p>Proteção para o dia todo</p>
-          </div>
-
-          <div className={styles.featureItem}>
             <span className={styles.icon}>🌬️</span>
             <h3>ALTA RESPIRABILIDADE</h3>
             <p>Mantém o corpo seco</p>

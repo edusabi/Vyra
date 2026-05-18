@@ -6,7 +6,7 @@ const BioInsta = () => {
     { title: '🛒 Compre Agora', url: '/products', type: 'primary' },
     { title: 'Nosso Site', url: '/', type: 'secondary' },
     { title: 'Nossa Marca', url: '/about', type: 'secondary' },
-    { title: 'Fale no WhatsApp', url: '#', type: 'secondary' },
+    { title: 'Fale no WhatsApp', url: 'https://wa.me/5581995594773', type: 'secondary' },
   ];
 
   return (

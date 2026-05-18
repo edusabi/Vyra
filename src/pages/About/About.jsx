@@ -53,7 +53,7 @@ const About = () => {
   </a>
 
   <a
-    href="https://wa.me/5581999999999"
+    href="https://wa.me/5581995594773"
     target="_blank"
     rel="noopener noreferrer"
     className={`${styles.socialButton} ${styles.whatsapp}`}
