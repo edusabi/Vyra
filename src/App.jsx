@@ -19,7 +19,6 @@ function Layout() {
 
   const location = useLocation()
 
-  // páginas onde o Header NÃO aparece
   const hideHeaderRoutes = ['/linkBio']
 
   const shouldHideHeader = hideHeaderRoutes.includes(location.pathname)

@@ -8,13 +8,10 @@ import { NavLink } from 'react-router-dom';
 const Landing = () => {
   
 
-  /* =========================
-     CARROSSEL
-  ========================= */
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // controla pausa após interação manual
+ 
   const [isPaused, setIsPaused] = useState(false);
 
   // timeout da pausa
@@ -174,8 +171,7 @@ const Landing = () => {
                     {/* TEXTO APARECE NO MOBILE */}
                     <p className={styles.heroDesc}>
                       Camisa Dry Fit Premium •
-                      Poliamida 90% com Elastano 10% •
-                      UV50+
+                      Poliamida 90% com Elastano 10% 
                       <br /><br />
                       Unimos tecnologia, conforto
                       e design para entregar
@@ -366,7 +362,7 @@ const Landing = () => {
                 to="/products"
                 className={styles.ctaButton}
                 >
-                COMPRAR AGORA
+                VER MAIS...
               </NavLink>
 
           </div>
