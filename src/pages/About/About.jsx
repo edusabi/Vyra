@@ -26,8 +26,7 @@ const About = () => {
           <p>
             Nossa composição de
             <strong>
-              {' '}Poliamida 90% e
-              Elastano 10%
+              {' '}100% Poliéster • Alta Respirabilidade
             </strong>
             {' '}garante um design
             minimalista, leve e durável.

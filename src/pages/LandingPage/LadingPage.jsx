@@ -171,7 +171,7 @@ const Landing = () => {
                     {/* TEXTO APARECE NO MOBILE */}
                     <p className={styles.heroDesc}>
                       Camisa Dry Fit Premium •
-                      Poliamida 90% com Elastano 10% 
+                       100% Poliéster • Alta Respirabilidade
                       <br /><br />
                       Unimos tecnologia, conforto
                       e design para entregar
