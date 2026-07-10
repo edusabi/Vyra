@@ -168,9 +168,8 @@ const Landing = () => {
                       </span>
                     </h1>
 
-                    {/* TEXTO APARECE NO MOBILE */}
                     <p className={styles.heroDesc}>
-                      Camisa Dry Fit Premium •
+                      Camisa Dry Fit •
                        100% Poliéster • Alta Respirabilidade
                       <br /><br />
                       Unimos tecnologia, conforto
@@ -178,7 +177,6 @@ const Landing = () => {
                       performance de verdade.
                     </p>
 
-                    {/* BOTÃO SOME NO MOBILE VIA CSS */}
                     <NavLink
                       to="/products"
                       className={styles.ctaButton}
@@ -301,7 +299,7 @@ const Landing = () => {
               <div className={styles.cardContent}>
 
                 <span className={styles.tag}>
-                  Dry Premium
+                  Dry Fit
                 </span>
 
                 <h3 className={styles.productName}>
@@ -324,7 +322,7 @@ const Landing = () => {
               <div className={styles.cardContent}>
 
                 <span className={styles.tag}>
-                  Dry Premium
+                  Dry Fit
                 </span>
 
                 <h3 className={styles.productName}>
@@ -347,7 +345,7 @@ const Landing = () => {
               <div className={styles.cardContent}>
 
                 <span className={styles.tag}>
-                  Lançamento
+                  Dry Fit
                 </span>
 
                 <h3 className={styles.productName}>
