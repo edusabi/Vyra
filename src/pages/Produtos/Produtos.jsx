@@ -3,9 +3,6 @@ import Footer from "../../components/Footer/Footer";
 import styles from "./Produtos.module.css";
 
 const Produtos = () => {
-  // ==========================================
-  // ESTADOS
-  // ==========================================
   const [cart, setCart] = useState(() => {
     const carrinhoSalvo = localStorage.getItem("vyra_cart");
     return carrinhoSalvo ? JSON.parse(carrinhoSalvo) : [];
@@ -13,6 +10,18 @@ const Produtos = () => {
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [tamanhosSelecionados, setTamanhosSelecionados] = useState({});
+  
+  // ==========================================
+  // ESTADO DO TOAST (NOTIFICAÇÃO NA TELA)
+  // ==========================================
+  const [toast, setToast] = useState({ show: false, message: "", type: "error" });
+
+  const mostrarToast = (message, type = "error") => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast({ show: false, message: "", type: "" });
+    }, 3000); // Some após 3 segundos
+  };
 
   useEffect(() => {
     localStorage.setItem("vyra_cart", JSON.stringify(cart));
@@ -43,22 +52,17 @@ const Produtos = () => {
     variacoes.forEach((variacao) => {
       todosProdutos.push({
         id: `${cor.prefixo}-${variacao.sufixo}`,
-        // Nome limpo para o site
         nomeSite: `Camisa Vyra Performance ${cor.nome}`, 
-        // Nome detalhado para o WhatsApp
         nomeWpp: `Camisa Vyra Performance ${cor.nome} - ${variacao.descricao}`, 
         img: `/Blusas/${cor.pasta}/${cor.prefixo} ${variacao.sufixo}.png`,
         tag: "DRY FIT",
-        preco: 89.90,
+        preco: 12.00,
       });
     });
   });
 
   const opcoesTamanhos = ["P", "M", "G", "GG"];
 
-  // ==========================================
-  // LÓGICA DO CARRINHO
-  // ==========================================
   const selecionarTamanho = (produtoId, tamanho) => {
     setTamanhosSelecionados((prev) => {
       if (prev[produtoId] === tamanho) {
@@ -76,8 +80,9 @@ const Produtos = () => {
   const adicionarAoCarrinho = (produto) => {
     const tamanhoEscolhido = tamanhosSelecionados[produto.id];
     
+    // Substituindo o alert() pelo Toast
     if (!tamanhoEscolhido) {
-      alert("Por favor, selecione um tamanho antes de adicionar ao carrinho!");
+      mostrarToast("Por favor, selecione um tamanho antes de adicionar!", "error");
       return; 
     }
     
@@ -92,6 +97,9 @@ const Produtos = () => {
       }
       return [...prevCart, { ...produto, cartItemId, tamanho: tamanhoEscolhido, qtd: 1 }];
     });
+
+    // Feedback visual de sucesso
+    mostrarToast("Produto adicionado ao carrinho!", "success");
   };
 
   const alterarQuantidade = (cartItemId, delta) => {
@@ -112,18 +120,27 @@ const Produtos = () => {
 
   const totalCarrinho = cart.reduce((acc, item) => acc + item.preco * item.qtd, 0);
   const totalItens = cart.reduce((acc, item) => acc + item.qtd, 0);
+  
+  // Lógica de Atacado
+  const pecasFaltando = 10 - totalItens;
+  const podeFinalizar = totalItens >= 10;
 
   // ==========================================
   // FUNÇÃO DE REDIRECIONAMENTO PARA WHATSAPP
   // ==========================================
   const finalizarCompraWhatsapp = () => {
+    // Validação do Atacado (Mínimo de 10 peças)
+    if (!podeFinalizar) {
+      mostrarToast(`O pedido mínimo é de 10 peças. Faltam ${pecasFaltando} peças.`, "error");
+      return;
+    }
+
     const numeroWpp = "5581995594773"; 
     
-    let mensagem = "Olá, Vyra! Gostaria de finalizar o meu pedido:\n\n";
+    let mensagem = "Olá, Vyra! Gostaria de finalizar o meu pedido de *ATACADO*:\n\n";
     mensagem += "*MEU CARRINHO:*\n";
 
     cart.forEach((item, index) => {
-      // Aqui usamos o nomeWpp para ir completo na mensagem (removido o link da foto)
       mensagem += `\n${index + 1}. *${item.nomeWpp}*`;
       mensagem += `\n▫️ Tamanho: *${item.tamanho}*`; 
       mensagem += `\n▫️ Quantidade: ${item.qtd}`;
@@ -132,18 +149,27 @@ const Produtos = () => {
     });
 
     mensagem += `\n=======================`;
+    mensagem += `\n*TOTAL DE PEÇAS: ${totalItens}*`;
     mensagem += `\n*VALOR TOTAL: R$ ${totalCarrinho.toFixed(2).replace(".", ",")}*`;
     mensagem += `\n=======================\n`;
     mensagem += `\nAguardo as instruções para pagamento e envio!`;
 
     const urlFormatada = encodeURIComponent(mensagem);
-
     window.open(`https://wa.me/${numeroWpp}?text=${urlFormatada}`, "_blank");
   };
 
   return (
     <div className={styles.container}>
       
+      {/* =========================
+          TOAST (MENSAGEM NA TELA)
+      ========================= */}
+      {toast.show && (
+        <div className={`${styles.toast} ${toast.type === "error" ? styles.toastError : styles.toastSuccess}`}>
+          {toast.message}
+        </div>
+      )}
+
       {/* BOTÃO FLUTUANTE */}
       <button 
         className={styles.floatingCartBtn} 
@@ -173,11 +199,9 @@ const Produtos = () => {
                 cart.map((item) => (
                   <div key={item.cartItemId} className={styles.cartItem}>
                     <div className={styles.cartItemImgBox}>
-                      {/* Usando nomeSite para a tag alt */}
                       <img src={item.img} alt={item.nomeSite} className={styles.cartItemImg} />
                     </div>
                     <div className={styles.cartItemInfo}>
-                      {/* Exibindo nomeSite no carrinho */}
                       <h4 title={item.nomeSite}>{item.nomeSite}</h4>
                       <span className={styles.cartItemSize}>Tamanho: {item.tamanho}</span>
                       <p className={styles.cartItemPrice}>R$ {item.preco.toFixed(2).replace(".", ",")}</p>
@@ -196,11 +220,27 @@ const Produtos = () => {
 
             {cart.length > 0 && (
               <div className={styles.cartFooter}>
+                
+                {/* AVISO DE ATACADO */}
+                {!podeFinalizar ? (
+                  <div className={styles.atacadoAviso}>
+                    Faltam <strong>{pecasFaltando} peças</strong> para atingir o mínimo de atacado (10).
+                  </div>
+                ) : (
+                  <div className={styles.atacadoSucesso}>
+                    ✓ Mínimo de atacado atingido!
+                  </div>
+                )}
+
                 <div className={styles.totalContainer}>
                   <span>TOTAL:</span>
                   <span>R$ {totalCarrinho.toFixed(2).replace(".", ",")}</span>
                 </div>
-                <button className={styles.checkoutBtn} onClick={finalizarCompraWhatsapp}>
+                
+                <button 
+                  className={`${styles.checkoutBtn} ${!podeFinalizar ? styles.checkoutBtnDisabled : ""}`} 
+                  onClick={finalizarCompraWhatsapp}
+                >
                   FINALIZAR COMPRA
                 </button>
               </div>
@@ -214,13 +254,13 @@ const Produtos = () => {
       ========================= */}
       <main className={styles.products}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>NOSSA COLEÇÃO COMPLETA</h2>
+          <h2 className={styles.sectionTitle}>NOSSA COLEÇÃO ATACADO</h2>
           <div className={styles.neonLine}></div>
+          <p style={{marginTop: "1rem", color: "#888"}}>Pedido mínimo: 10 peças.</p>
         </div>
 
         <div className={styles.productGrid}>
           {todosProdutos.map((produto) => {
-            
             const tamanhoAtual = tamanhosSelecionados[produto.id];
 
             return (
@@ -238,7 +278,6 @@ const Produtos = () => {
                   
                   <div className={styles.infoWrapper}>
                     <div className={styles.titleGroup}>
-                      {/* Exibindo nomeSite na vitrine */}
                       <h3 className={styles.productName}>{produto.nomeSite}</h3>
                       <span className={styles.tag}>{produto.tag}</span>
                     </div>

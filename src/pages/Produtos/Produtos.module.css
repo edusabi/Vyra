@@ -448,3 +448,75 @@
   margin-bottom: 0.3rem;
   display: block;
 }
+
+/* =========================
+   SISTEMA DE TOAST (NOTIFICAÇÃO)
+========================= */
+.toast {
+  position: fixed;
+  top: 80px; /* Aparece próximo ao topo para facilitar a visão no celular */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  z-index: 9999;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
+  text-align: center;
+  width: max-content;
+  max-width: 90vw;
+  animation: slideDown 0.3s ease forwards;
+}
+
+.toastError {
+  background-color: #ff3333;
+  color: #fff;
+}
+
+.toastSuccess {
+  background-color: var(--vyra-neon, #a2ff00);
+  color: #000;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translate(-50%, -20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* =========================
+   AVISOS DE ATACADO (CARRINHO)
+========================= */
+.atacadoAviso {
+  background: rgba(255, 51, 51, 0.1);
+  color: #ff5555;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 51, 51, 0.3);
+}
+
+.atacadoSucesso {
+  background: rgba(162, 255, 0, 0.1);
+  color: var(--vyra-neon, #a2ff00);
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(162, 255, 0, 0.3);
+}
+
+/* Modificador do botão desativado */
+.checkoutBtnDisabled {
+  background: #333 !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+.checkoutBtnDisabled:hover {
+  transform: none !important;
+}
