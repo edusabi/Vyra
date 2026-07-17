@@ -4,11 +4,11 @@ import styles from "./Produtos.module.css";
 
 const Produtos = () => {
   const cores = [
-    { pasta: "Azul Marinho", prefixo: "Azul", nome: "Azul Marinho" },
     { pasta: "Branco", prefixo: "Branco", nome: "Branco" },
-    { pasta: "Cinza Claro", prefixo: "Cinza Claro", nome: "Cinza Claro" },
-    { pasta: "Cinza Escuro", prefixo: "Cinza", nome: "Cinza Escuro" }, 
     { pasta: "Preto", prefixo: "Preto", nome: "Preto" },
+    { pasta: "Cinza Claro", prefixo: "Cinza Claro", nome: "Cinza Claro" },
+    { pasta: "Azul Marinho", prefixo: "Azul", nome: "Azul Marinho" },
+    { pasta: "Cinza Escuro", prefixo: "Cinza", nome: "Cinza Escuro" }, 
     { pasta: "Verde Militar", prefixo: "Verde", nome: "Verde Militar" }, 
   ];
 
