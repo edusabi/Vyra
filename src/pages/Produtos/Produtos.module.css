@@ -1,3 +1,122 @@
-.produtosContainer{
-    margin-top: 4rem;
+/* =========================
+   CONTAINER / BASE
+========================= */
+.produtosContainer {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--vyra-graphite, #050505);
+  color: var(--vyra-white, #ffffff);
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 6rem 5%;
+}
+
+/* =========================
+   CABEÇALHO DA SEÇÃO
+========================= */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.pageTitle {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+}
+
+.pageSubtitle {
+  color: var(--vyra-gray, #888888);
+  font-size: 1.1rem;
+}
+
+/* =========================
+   GRID DE 24 PRODUTOS
+========================= */
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 camisas por linha no PC */
+  gap: 2rem;
+}
+
+.productCard {
+  background: var(--vyra-black, #111111);
+  border: 1px solid var(--vyra-border, #333333);
+  border-radius: 8px;
+  transition: 0.3s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.productCard:hover {
+  border-color: var(--vyra-neon, #a2ff00);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.imagePlaceholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: #151515;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.cardContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tag {
+  color: var(--vyra-neon, #a2ff00);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.productName {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 1200px) {
+  .productGrid {
+    grid-template-columns: repeat(3, 1fr); /* 3 por linha em telas médias */
+  }
+}
+
+@media (max-width: 992px) {
+  .productGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 por linha em tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .productGrid {
+    grid-template-columns: 1fr; /* 1 por linha no celular */
+  }
+  
+  .mainContent {
+    padding: 4rem 1.5rem;
+  }
+  
+  .pageTitle {
+    font-size: 2rem;
+  }
 }

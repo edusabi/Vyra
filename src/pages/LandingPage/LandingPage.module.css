@@ -1,12 +1,3 @@
-
-/* =========================================================
-   VYRA PERFORMANCE — FULL CSS
-========================================================= */
-
-/* =========================
-   CONTAINER / BASE
-========================= */
-
 .container {
   width: 100%;
   overflow-x: hidden;
@@ -14,9 +5,6 @@
   color: var(--vyra-white);
 }
 
-/* =========================
-   CARROSSEL HERO
-========================= */
 
 .carouselSection {
   width: 100%;
@@ -121,9 +109,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow:
-    0 20px 60px rgba(0,0,0,0.7),
-    0 0 60px rgba(162,255,0,0.04);
   transition: transform 0.5s ease;
 }
 

@@ -1,87 +1,75 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styles from './LandingPage.module.css';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
-import { NavLink } from 'react-router-dom';
-
+import React, { useState, useEffect, useRef } from "react";
+import styles from "./LandingPage.module.css";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import { NavLink } from "react-router-dom";
 
 const Landing = () => {
-  
-
-
   const [currentSlide, setCurrentSlide] = useState(0);
-
- 
   const [isPaused, setIsPaused] = useState(false);
-
-  // timeout da pausa
   const pauseTimeoutRef = useRef(null);
 
   const slides = [
     {
       id: 1,
-      colorName: 'PRETO',
-      hex: '#000000',
-      label: '01',
+      colorName: "PRETO",
+      hex: "#000000",
+      label: "01",
+      img: "/Blusas/Preto/Preto V Peito.png",
     },
     {
       id: 2,
-      colorName: 'CHUMBO',
-      hex: '#353B3E',
-      label: '02',
+      colorName: "CINZA CLARO",
+      hex: "#353B3E",
+      label: "02",
+      img: "/Blusas/Cinza Claro/Cinza Claro V Centro.png",
     },
     {
       id: 3,
-      colorName: 'MARINHO',
-      hex: '#003057',
-      label: '03',
+      colorName: "AZUL MARINHO",
+      hex: "#003057",
+      label: "03",
+      img: "/Blusas/Azul Marinho/Azul Texto Centro.png",
     },
     {
       id: 4,
-      colorName: 'BRANCO',
-      hex: '#FFFFFF',
-      label: '04',
+      colorName: "BRANCO",
+      hex: "#FFFFFF",
+      label: "04",
+      img: "/Blusas/Branco/Branco V Peito.png",
     },
     {
       id: 5,
-      colorName: 'VERDE MILITAR',
-      hex: '#4A5A35',
-      label: '05',
+      colorName: "CINZA ESCURO",
+      hex: "#4A5A35",
+      label: "05",
+      img: "/Blusas/Cinza Escuro/Cinza Texto Peito.png",
+    },
+    {
+      id: 6,
+      colorName: "VERDE MILITAR",
+      hex: "#4A5A35",
+      label: "06", 
+      img: "/Blusas/Verde Militar/Verde V Peito.png",
     },
   ];
 
-  /* =========================
-     AUTO PLAY
-  ========================= */
-
   useEffect(() => {
-
     if (isPaused) return;
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) =>
-        prev === slides.length - 1 ? 0 : prev + 1
-      );
+      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 5000);
 
     return () => clearInterval(interval);
-
   }, [isPaused, slides.length]);
 
-  /* =========================
-     PAUSAR AUTO PLAY
-  ========================= */
-
   const pauseAutoPlay = () => {
-
     setIsPaused(true);
-
     clearTimeout(pauseTimeoutRef.current);
-
     pauseTimeoutRef.current = setTimeout(() => {
       setIsPaused(false);
-    }, 8000); // volta após 8 segundos
-
+    }, 8000); 
   };
 
   /* =========================
@@ -89,167 +77,107 @@ const Landing = () => {
   ========================= */
 
   const nextSlide = () => {
-
     pauseAutoPlay();
-
-    setCurrentSlide((prev) =>
-      prev === slides.length - 1 ? 0 : prev + 1
-    );
-
+    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-
     pauseAutoPlay();
-
-    setCurrentSlide((prev) =>
-      prev === 0 ? slides.length - 1 : prev - 1
-    );
-
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
   const goToSlide = (index) => {
-
     pauseAutoPlay();
-
     setCurrentSlide(index);
-
   };
 
   return (
     <div className={styles.container}>
-
-      {/* =========================
-          MAIN
-      ========================= */}
       <main>
 
-        {/* =========================
-            CARROSSEL HERO
-        ========================= */}
-
         <section className={styles.carouselSection}>
-
           <div className={styles.carouselContainer}>
-
-            {/* SETA ESQUERDA */}
-            <button
-              className={styles.arrowLeft}
-              onClick={prevSlide}
-            >
+            <button className={styles.arrowLeft} onClick={prevSlide}>
               &#10094;
             </button>
 
-            {/* SLIDES */}
             <div className={styles.carouselContent}>
-
               {slides.map((slide, index) => (
-
                 <div
                   key={slide.id}
                   className={`${styles.slide} ${
-                    index === currentSlide
-                      ? styles.activeSlide
-                      : ''
+                    index === currentSlide ? styles.activeSlide : ""
                   }`}
                 >
-
-                  {/* TEXTO */}
                   <div className={styles.slideInfo}>
-
-                    <span className={styles.slideNumber}>
-                      {slide.label}
-                    </span>
+                    <span className={styles.slideNumber}>{slide.label}</span>
 
                     <h1 className={styles.slideTitle}>
                       VYRA <br />
-                      <span className={styles.neonText}>
-                        {slide.colorName}
-                      </span>
+                      <span className={styles.neonText}>{slide.colorName}</span>
                     </h1>
 
                     <p className={styles.heroDesc}>
-                      Camisa Dry Fit •
-                       100% Poliéster • Alta Respirabilidade
-                      <br /><br />
-                      Unimos tecnologia, conforto
-                      e design para entregar
+                      Camisa Dry Fit • 100% Poliéster • Alta Respirabilidade
+                      <br />
+                      <br />
+                      Unimos tecnologia, conforto e design para entregar
                       performance de verdade.
                     </p>
 
-                    <NavLink
-                      to="/products"
-                      className={styles.ctaButton}
-                    >
+                    <NavLink to="/products" className={styles.ctaButton}>
                       GARANTIR O MEU
                     </NavLink>
-
                   </div>
 
-                  {/* IMAGEM */}
                   <div className={styles.imageContainer}>
-
-                    <div
-                      className={styles.mockupImage}
-                      style={{
-                        backgroundColor: slide.hex
-                      }}
-                    >
-
-                      <span className={styles.placeholderLabel}>
-                        MOCKUP {slide.colorName}
-                      </span>
-
-                    </div>
-
+                    {slide.img ? (
+                      <img
+                        src={slide.img}
+                        alt={`Camisa ${slide.colorName}`}
+                        className={styles.mockupImage}
+                        style={{
+                          objectFit: "contain", 
+                          width: "80%",
+                        }} 
+                      />
+                    ) : (
+                      <div
+                        className={styles.mockupImage}
+                        style={{ backgroundColor: slide.hex }}
+                      >
+                        <span className={styles.placeholderLabel}>
+                          MOCKUP {slide.colorName}
+                        </span>
+                      </div>
+                    )}
                   </div>
-
                 </div>
-
               ))}
-
             </div>
 
             {/* SETA DIREITA */}
-            <button
-              className={styles.arrowRight}
-              onClick={nextSlide}
-            >
+            <button className={styles.arrowRight} onClick={nextSlide}>
               &#10095;
             </button>
 
             {/* DOTS */}
             <div className={styles.dots}>
-
               {slides.map((_, index) => (
-
                 <span
                   key={index}
                   onClick={() => goToSlide(index)}
                   className={`${styles.dot} ${
-                    index === currentSlide
-                      ? styles.activeDot
-                      : ''
+                    index === currentSlide ? styles.activeDot : ""
                   }`}
                 />
-
               ))}
-
             </div>
-
           </div>
-
         </section>
 
-        {/* =========================
-            FEATURES
-        ========================= */}
 
-        <section
-          id="tecnologia"
-          className={styles.features}
-        >
-
+        <section id="tecnologia" className={styles.features}>
           <div className={styles.featureItem}>
             <span className={styles.icon}>❄️</span>
             <h3>TOQUE FRIO</h3>
@@ -267,110 +195,92 @@ const Landing = () => {
             <h3>ALTA RESPIRABILIDADE</h3>
             <p>Mantém o corpo seco</p>
           </div>
-
         </section>
 
-        {/* =========================
-            PRODUTOS
-        ========================= */}
 
-        <section
-          id="produtos"
-          className={styles.products}
-        >
-
+        <section id="produtos" className={styles.products}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>
-              NOSSA LINHA
-            </h2>
+            <h2 className={styles.sectionTitle}>NOSSA LINHA</h2>
           </div>
 
           <div className={styles.productGrid}>
-
-            {/* PRODUTO 1 */}
+            
             <div className={styles.productCard}>
-
               <div className={styles.imagePlaceholder}>
-                <span className={styles.mockupText}>
-                  CAMISA PRETA
-                </span>
+                <img
+                  src="/Blusas/Preto/Preto V Peito.png"
+                  alt="Camisa Vyra Performance Preta"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain", 
+                    borderRadius: "8px",
+                  }}
+                />
               </div>
 
               <div className={styles.cardContent}>
-
-                <span className={styles.tag}>
-                  Dry Fit
-                </span>
-
+                <span className={styles.tag}>Dry Fit</span>
                 <h3 className={styles.productName}>
                   Camisa Vyra Performance Preto
                 </h3>
-
               </div>
-
             </div>
 
             {/* PRODUTO 2 */}
             <div className={styles.productCard}>
-
               <div className={styles.imagePlaceholder}>
-                <span className={styles.mockupText}>
-                  CAMISA CHUMBO
-                </span>
+                <img
+                  src="/Blusas/Branco/Branco V Peito.png" 
+                  alt="Camisa Vyra Performance Branco"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain", 
+                    borderRadius: "8px",
+                  }}
+                />
               </div>
 
               <div className={styles.cardContent}>
-
-                <span className={styles.tag}>
-                  Dry Fit
-                </span>
-
+                <span className={styles.tag}>Dry Fit</span>
                 <h3 className={styles.productName}>
                   Camisa Vyra Performance Chumbo
                 </h3>
-
               </div>
-
             </div>
 
             {/* PRODUTO 3 */}
             <div className={styles.productCard}>
-
               <div className={styles.imagePlaceholder}>
-                <span className={styles.mockupText}>
-                  REGATA PRETA
-                </span>
+                <img
+                  src="/Blusas/Cinza Escuro/Cinza V Peito.png" 
+                  alt="Regata Vyra Performance Preta"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain", 
+                    borderRadius: "8px",
+                  }}
+                />
               </div>
 
               <div className={styles.cardContent}>
-
-                <span className={styles.tag}>
-                  Dry Fit
-                </span>
-
+                <span className={styles.tag}>Dry Fit</span>
                 <h3 className={styles.productName}>
                   Regata Vyra Performance Preto
                 </h3>
-
-
               </div>
-
             </div>
-              <NavLink
-                to="/products"
-                className={styles.ctaButton}
-                >
-                VER MAIS...
-              </NavLink>
 
+            <NavLink to="/products" className={styles.ctaButton}>
+              VER MAIS...
+            </NavLink>
           </div>
-
         </section>
-
       </main>
-        
-        <Footer/>
 
+      <Footer />
     </div>
   );
 };
