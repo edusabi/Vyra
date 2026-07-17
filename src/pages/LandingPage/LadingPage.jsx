@@ -268,7 +268,7 @@ const Landing = () => {
               <div className={styles.cardContent}>
                 <span className={styles.tag}>Dry Fit</span>
                 <h3 className={styles.productName}>
-                  Regata Vyra Performance Preto
+                  Camisa Vyra Performance Preto
                 </h3>
               </div>
             </div>
