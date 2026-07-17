@@ -12,7 +12,6 @@ const Produtos = () => {
   });
   
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
   const [tamanhosSelecionados, setTamanhosSelecionados] = useState({});
 
   useEffect(() => {
@@ -44,7 +43,10 @@ const Produtos = () => {
     variacoes.forEach((variacao) => {
       todosProdutos.push({
         id: `${cor.prefixo}-${variacao.sufixo}`,
-        nome: `Camisa Vyra Performance ${cor.nome} - ${variacao.descricao}`,
+        // Nome limpo para o site
+        nomeSite: `Camisa Vyra Performance ${cor.nome}`, 
+        // Nome detalhado para o WhatsApp
+        nomeWpp: `Camisa Vyra Performance ${cor.nome} - ${variacao.descricao}`, 
         img: `/Blusas/${cor.pasta}/${cor.prefixo} ${variacao.sufixo}.png`,
         tag: "DRY FIT",
         preco: 89.90,
@@ -59,14 +61,11 @@ const Produtos = () => {
   // ==========================================
   const selecionarTamanho = (produtoId, tamanho) => {
     setTamanhosSelecionados((prev) => {
-      // Se o tamanho clicado for igual ao que já está selecionado, ele "desmarca" (remove do estado)
       if (prev[produtoId] === tamanho) {
         const novoEstado = { ...prev };
         delete novoEstado[produtoId];
         return novoEstado;
       }
-      
-      // Caso contrário, ele marca o tamanho selecionado
       return {
         ...prev,
         [produtoId]: tamanho
@@ -119,20 +118,17 @@ const Produtos = () => {
   // ==========================================
   const finalizarCompraWhatsapp = () => {
     const numeroWpp = "5581995594773"; 
-    const baseUrl = window.location.origin;
     
     let mensagem = "Olá, Vyra! Gostaria de finalizar o meu pedido:\n\n";
     mensagem += "*MEU CARRINHO:*\n";
 
     cart.forEach((item, index) => {
-      const linkImagem = `${baseUrl}${item.img}`;
-      
-      mensagem += `\n${index + 1}. *${item.nome}*`;
+      // Aqui usamos o nomeWpp para ir completo na mensagem (removido o link da foto)
+      mensagem += `\n${index + 1}. *${item.nomeWpp}*`;
       mensagem += `\n▫️ Tamanho: *${item.tamanho}*`; 
       mensagem += `\n▫️ Quantidade: ${item.qtd}`;
       mensagem += `\n▫️ Valor Unid: R$ ${item.preco.toFixed(2).replace(".", ",")}`;
-      mensagem += `\n▫️ Subtotal: R$ ${(item.preco * item.qtd).toFixed(2).replace(".", ",")}`;
-      mensagem += `\n🔗 Foto: ${linkImagem}\n`; 
+      mensagem += `\n▫️ Subtotal: R$ ${(item.preco * item.qtd).toFixed(2).replace(".", ",")}\n`; 
     });
 
     mensagem += `\n=======================`;
@@ -177,10 +173,12 @@ const Produtos = () => {
                 cart.map((item) => (
                   <div key={item.cartItemId} className={styles.cartItem}>
                     <div className={styles.cartItemImgBox}>
-                      <img src={item.img} alt={item.nome} className={styles.cartItemImg} />
+                      {/* Usando nomeSite para a tag alt */}
+                      <img src={item.img} alt={item.nomeSite} className={styles.cartItemImg} />
                     </div>
                     <div className={styles.cartItemInfo}>
-                      <h4 title={item.nome}>{item.nome}</h4>
+                      {/* Exibindo nomeSite no carrinho */}
+                      <h4 title={item.nomeSite}>{item.nomeSite}</h4>
                       <span className={styles.cartItemSize}>Tamanho: {item.tamanho}</span>
                       <p className={styles.cartItemPrice}>R$ {item.preco.toFixed(2).replace(".", ",")}</p>
                       
@@ -231,7 +229,7 @@ const Produtos = () => {
                 <div className={styles.imagePlaceholder}>
                   <img
                     src={produto.img}
-                    alt={produto.nome}
+                    alt={produto.nomeSite}
                     className={styles.productImg}
                   />
                 </div>
@@ -240,7 +238,8 @@ const Produtos = () => {
                   
                   <div className={styles.infoWrapper}>
                     <div className={styles.titleGroup}>
-                      <h3 className={styles.productName}>{produto.nome}</h3>
+                      {/* Exibindo nomeSite na vitrine */}
+                      <h3 className={styles.productName}>{produto.nomeSite}</h3>
                       <span className={styles.tag}>{produto.tag}</span>
                     </div>
                     <span className={styles.price}>
