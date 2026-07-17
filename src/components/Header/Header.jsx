@@ -11,7 +11,8 @@ import {
 
 import axios from 'axios';
 
-const Header = () => {
+// Recebendo a prop hideBuyButton aqui
+const Header = ({ hideBuyButton }) => {
 
   const [isMenuOpen, setIsMenuOpen] =
     useState(false);
@@ -19,11 +20,6 @@ const Header = () => {
   const [adminLogado, setAdminLogado] =
     useState(false);
 
-  /*
-  ========================================
-  VERIFICAR ADMIN
-  ========================================
-  */
 
   const verificarAdmin = async () => {
 
@@ -46,19 +42,10 @@ const Header = () => {
 
   };
 
-  /*
-  ========================================
-  INIT
-  ========================================
-  */
-
   useEffect(() => {
 
     verificarAdmin();
 
-    /*
-    ESCUTAR LOGIN/LOGOUT
-    */
 
     window.addEventListener(
       'adminAuthChanged',
@@ -75,12 +62,6 @@ const Header = () => {
     };
 
   }, []);
-
-  /*
-  ========================================
-  TRAVAR SCROLL MENU
-  ========================================
-  */
 
   useEffect(() => {
 
@@ -99,11 +80,6 @@ const Header = () => {
 
   }, [isMenuOpen]);
 
-  /*
-  ========================================
-  MENU
-  ========================================
-  */
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -112,12 +88,6 @@ const Header = () => {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
-
-  /*
-  ========================================
-  LOGOUT
-  ========================================
-  */
 
   const logout = async () => {
 
@@ -131,17 +101,9 @@ const Header = () => {
         }
       );
 
-      /*
-      ATUALIZAR HEADER
-      */
-
       window.dispatchEvent(
         new Event('adminAuthChanged')
       );
-
-      /*
-      REDIRECT
-      */
 
       window.location.href = '/';
 
@@ -153,11 +115,6 @@ const Header = () => {
 
   };
 
-  /*
-  ========================================
-  RENDER
-  ========================================
-  */
 
   return (
     <header className={styles.header}>
@@ -174,7 +131,6 @@ const Header = () => {
         </span>
       </div>
 
-      {/* NAV */}
 
       <nav
         className={`
@@ -236,14 +192,16 @@ const Header = () => {
           </button>
         )}
 
-        {/* COMPRAR */}
+        {/* COMPRAR - Com condicional para esconder quando necessário */}
 
-        <NavLink
-          to="/products"
-          className={styles.navBtnLink}
-        >
-          Comprar Agora
-        </NavLink>
+        {!hideBuyButton && (
+          <NavLink
+            to="/products"
+            className={styles.navBtnLink}
+          >
+            Comprar Agora
+          </NavLink>
+        )}
 
       </div>
 

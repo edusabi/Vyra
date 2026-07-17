@@ -16,16 +16,18 @@ import Header from './components/Header/Header'
 import BioInsta from './pages/BioInsta/BioInsta'
 
 function Layout() {
-
   const location = useLocation()
 
   const hideHeaderRoutes = ['/linkBio']
-
   const shouldHideHeader = hideHeaderRoutes.includes(location.pathname)
+
+  // Verifica se a rota atual é exatamente a página de produtos
+  const isProductsPage = location.pathname === '/products'
 
   return (
     <>
-      {!shouldHideHeader && <Header />}
+      {/* Passa a prop hideBuyButton como verdadeira apenas se estiver em /products */}
+      {!shouldHideHeader && <Header hideBuyButton={isProductsPage} />}
 
       <Routes>
 
