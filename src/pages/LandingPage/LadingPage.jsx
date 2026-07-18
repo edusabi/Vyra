@@ -5,6 +5,35 @@ import Footer from "../../components/Footer/Footer";
 import { NavLink } from "react-router-dom";
 
 const Landing = () => {
+  // ==========================================
+  // TELA DE CARREGAMENTO GLOBAL
+  // ==========================================
+  const [isLoadingPage, setIsLoadingPage] = useState(true);
+
+  useEffect(() => {
+    // Tela de loading por 2 segundos
+    const timer = setTimeout(() => {
+      setIsLoadingPage(false);
+    }, 2000); 
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    // Trava a rolagem da página enquanto carrega
+    if (isLoadingPage) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isLoadingPage]);
+
+  // ==========================================
+  // CARROSSEL
+  // ==========================================
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const pauseTimeoutRef = useRef(null);
@@ -73,7 +102,7 @@ const Landing = () => {
   };
 
   /* =========================
-     AÇÕES
+     AÇÕES DO CARROSSEL
   ========================= */
 
   const nextSlide = () => {
@@ -92,196 +121,205 @@ const Landing = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <main>
+    <>
+      {isLoadingPage && (
+        <div className={styles.globalLoaderOverlay}>
+          <div className={styles.spinner}></div>
+          <p className={styles.loadingText}>CARREGANDO...</p>
+        </div>
+      )}
 
-        <section className={styles.carouselSection}>
-          <div className={styles.carouselContainer}>
-            <button className={styles.arrowLeft} onClick={prevSlide}>
-              &#10094;
-            </button>
+      <div className={styles.container}>
+        <main>
 
-            <div className={styles.carouselContent}>
-              {slides.map((slide, index) => (
-                <div
-                  key={slide.id}
-                  className={`${styles.slide} ${
-                    index === currentSlide ? styles.activeSlide : ""
-                  }`}
-                >
-                  <div className={styles.slideInfo}>
-                    <span className={styles.slideNumber}>{slide.label}</span>
+          <section className={styles.carouselSection}>
+            <div className={styles.carouselContainer}>
+              <button className={styles.arrowLeft} onClick={prevSlide}>
+                &#10094;
+              </button>
 
-                    <h1 className={styles.slideTitle}>
-                      VYRA <br />
-                      <span className={styles.neonText}>{slide.colorName}</span>
-                    </h1>
+              <div className={styles.carouselContent}>
+                {slides.map((slide, index) => (
+                  <div
+                    key={slide.id}
+                    className={`${styles.slide} ${
+                      index === currentSlide ? styles.activeSlide : ""
+                    }`}
+                  >
+                    <div className={styles.slideInfo}>
+                      <span className={styles.slideNumber}>{slide.label}</span>
 
-                    <p className={styles.heroDesc}>
-                      Camisa Dry Fit • 100% Poliéster • Alta Respirabilidade
-                      <br />
-                      <br />
-                      Unimos tecnologia, conforto e design para entregar
-                      performance de verdade.
-                    </p>
+                      <h1 className={styles.slideTitle}>
+                        VYRA <br />
+                        <span className={styles.neonText}>{slide.colorName}</span>
+                      </h1>
 
-                    <NavLink to="/products" className={styles.ctaButton}>
-                      GARANTIR O MEU
-                    </NavLink>
+                      <p className={styles.heroDesc}>
+                        Camisa Dry Fit • 100% Poliéster • Alta Respirabilidade
+                        <br />
+                        <br />
+                        Unimos tecnologia, conforto e design para entregar
+                        performance de verdade.
+                      </p>
+
+                      <NavLink to="/products" className={styles.ctaButton}>
+                        GARANTIR O MEU
+                      </NavLink>
+                    </div>
+
+                    <div className={styles.imageContainer}>
+                      {slide.img ? (
+                        <img
+                          src={slide.img}
+                          alt={`Camisa ${slide.colorName}`}
+                          className={styles.mockupImage}
+                          style={{
+                            objectFit: "contain", 
+                            width: "80%",
+                          }} 
+                        />
+                      ) : (
+                        <div
+                          className={styles.mockupImage}
+                          style={{ backgroundColor: slide.hex }}
+                        >
+                          <span className={styles.placeholderLabel}>
+                            MOCKUP {slide.colorName}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
+                ))}
+              </div>
 
-                  <div className={styles.imageContainer}>
-                    {slide.img ? (
-                      <img
-                        src={slide.img}
-                        alt={`Camisa ${slide.colorName}`}
-                        className={styles.mockupImage}
-                        style={{
-                          objectFit: "contain", 
-                          width: "80%",
-                        }} 
-                      />
-                    ) : (
-                      <div
-                        className={styles.mockupImage}
-                        style={{ backgroundColor: slide.hex }}
-                      >
-                        <span className={styles.placeholderLabel}>
-                          MOCKUP {slide.colorName}
-                        </span>
-                      </div>
-                    )}
-                  </div>
+              {/* SETA DIREITA */}
+              <button className={styles.arrowRight} onClick={nextSlide}>
+                &#10095;
+              </button>
+
+              {/* DOTS */}
+              <div className={styles.dots}>
+                {slides.map((_, index) => (
+                  <span
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`${styles.dot} ${
+                      index === currentSlide ? styles.activeDot : ""
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+
+
+          <section id="tecnologia" className={styles.features}>
+            <div className={styles.featureItem}>
+              <span className={styles.icon}>❄️</span>
+              <h3>TOQUE FRIO</h3>
+              <p>Conforto térmico extremo</p>
+            </div>
+
+            <div className={styles.featureItem}>
+              <span className={styles.icon}>💧</span>
+              <h3>SECAGEM RÁPIDA</h3>
+              <p>Mais conforto no treino</p>
+            </div>
+
+            <div className={styles.featureItem}>
+              <span className={styles.icon}>🌬️</span>
+              <h3>ALTA RESPIRABILIDADE</h3>
+              <p>Mantém o corpo seco</p>
+            </div>
+          </section>
+
+
+          <section id="produtos" className={styles.products}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>NOSSA LINHA</h2>
+            </div>
+
+            <div className={styles.productGrid}>
+              
+              <div className={styles.productCard}>
+                <div className={styles.imagePlaceholder}>
+                  <img
+                    src="/Blusas/Preto/Preto V Peito.png"
+                    alt="Camisa Vyra Performance Preta"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain", 
+                      borderRadius: "8px",
+                    }}
+                  />
                 </div>
-              ))}
+
+                <div className={styles.cardContent}>
+                  <span className={styles.tag}>Dry Fit</span>
+                  <h3 className={styles.productName}>
+                    Camisa Vyra Performance Preto
+                  </h3>
+                </div>
+              </div>
+
+              {/* PRODUTO 2 */}
+              <div className={styles.productCard}>
+                <div className={styles.imagePlaceholder}>
+                  <img
+                    src="/Blusas/Branco/Branco V Peito.png" 
+                    alt="Camisa Vyra Performance Branco"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain", 
+                      borderRadius: "8px",
+                    }}
+                  />
+                </div>
+
+                <div className={styles.cardContent}>
+                  <span className={styles.tag}>Dry Fit</span>
+                  <h3 className={styles.productName}>
+                    Camisa Vyra Performance Chumbo
+                  </h3>
+                </div>
+              </div>
+
+              {/* PRODUTO 3 */}
+              <div className={styles.productCard}>
+                <div className={styles.imagePlaceholder}>
+                  <img
+                    src="/Blusas/Cinza Escuro/Cinza V Peito.png" 
+                    alt="Regata Vyra Performance Preta"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain", 
+                      borderRadius: "8px",
+                    }}
+                  />
+                </div>
+
+                <div className={styles.cardContent}>
+                  <span className={styles.tag}>Dry Fit</span>
+                  <h3 className={styles.productName}>
+                    Camisa Vyra Performance Preto
+                  </h3>
+                </div>
+              </div>
+
+              <NavLink to="/products" className={styles.ctaButton}>
+                VER MAIS...
+              </NavLink>
             </div>
+          </section>
+        </main>
 
-            {/* SETA DIREITA */}
-            <button className={styles.arrowRight} onClick={nextSlide}>
-              &#10095;
-            </button>
-
-            {/* DOTS */}
-            <div className={styles.dots}>
-              {slides.map((_, index) => (
-                <span
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`${styles.dot} ${
-                    index === currentSlide ? styles.activeDot : ""
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-
-        <section id="tecnologia" className={styles.features}>
-          <div className={styles.featureItem}>
-            <span className={styles.icon}>❄️</span>
-            <h3>TOQUE FRIO</h3>
-            <p>Conforto térmico extremo</p>
-          </div>
-
-          <div className={styles.featureItem}>
-            <span className={styles.icon}>💧</span>
-            <h3>SECAGEM RÁPIDA</h3>
-            <p>Mais conforto no treino</p>
-          </div>
-
-          <div className={styles.featureItem}>
-            <span className={styles.icon}>🌬️</span>
-            <h3>ALTA RESPIRABILIDADE</h3>
-            <p>Mantém o corpo seco</p>
-          </div>
-        </section>
-
-
-        <section id="produtos" className={styles.products}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>NOSSA LINHA</h2>
-          </div>
-
-          <div className={styles.productGrid}>
-            
-            <div className={styles.productCard}>
-              <div className={styles.imagePlaceholder}>
-                <img
-                  src="/Blusas/Preto/Preto V Peito.png"
-                  alt="Camisa Vyra Performance Preta"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain", 
-                    borderRadius: "8px",
-                  }}
-                />
-              </div>
-
-              <div className={styles.cardContent}>
-                <span className={styles.tag}>Dry Fit</span>
-                <h3 className={styles.productName}>
-                  Camisa Vyra Performance Preto
-                </h3>
-              </div>
-            </div>
-
-            {/* PRODUTO 2 */}
-            <div className={styles.productCard}>
-              <div className={styles.imagePlaceholder}>
-                <img
-                  src="/Blusas/Branco/Branco V Peito.png" 
-                  alt="Camisa Vyra Performance Branco"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain", 
-                    borderRadius: "8px",
-                  }}
-                />
-              </div>
-
-              <div className={styles.cardContent}>
-                <span className={styles.tag}>Dry Fit</span>
-                <h3 className={styles.productName}>
-                  Camisa Vyra Performance Chumbo
-                </h3>
-              </div>
-            </div>
-
-            {/* PRODUTO 3 */}
-            <div className={styles.productCard}>
-              <div className={styles.imagePlaceholder}>
-                <img
-                  src="/Blusas/Cinza Escuro/Cinza V Peito.png" 
-                  alt="Regata Vyra Performance Preta"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain", 
-                    borderRadius: "8px",
-                  }}
-                />
-              </div>
-
-              <div className={styles.cardContent}>
-                <span className={styles.tag}>Dry Fit</span>
-                <h3 className={styles.productName}>
-                  Camisa Vyra Performance Preto
-                </h3>
-              </div>
-            </div>
-
-            <NavLink to="/products" className={styles.ctaButton}>
-              VER MAIS...
-            </NavLink>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
 };
 

@@ -3,6 +3,21 @@ import Footer from "../../components/Footer/Footer";
 import styles from "./Produtos.module.css";
 
 const Produtos = () => {
+  // ==========================================
+  // TELA DE CARREGAMENTO GLOBAL
+  // ==========================================
+  const [isLoadingPage, setIsLoadingPage] = useState(true);
+
+  useEffect(() => {
+    // "Burla" a espera deixando a tela de loading por 2 segundos
+    // enquanto o navegador baixa as primeiras camisas no fundo
+    const timer = setTimeout(() => {
+      setIsLoadingPage(false);
+    }, 2000); 
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const [cart, setCart] = useState(() => {
     const carrinhoSalvo = localStorage.getItem("vyra_cart");
     return carrinhoSalvo ? JSON.parse(carrinhoSalvo) : [];
@@ -12,9 +27,6 @@ const Produtos = () => {
   const [tamanhosSelecionados, setTamanhosSelecionados] = useState({});
   const [toast, setToast] = useState({ show: false, message: "", type: "error" });
   
-  // ==========================================
-  // ESTADO PARA O CARREGAMENTO DAS IMAGENS
-  // ==========================================
   const [loadedImages, setLoadedImages] = useState({});
 
   const handleImageLoad = (produtoId) => {
@@ -32,7 +44,7 @@ const Produtos = () => {
   };
 
   useEffect(() => {
-    if (isCartOpen) {
+    if (isCartOpen || isLoadingPage) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -40,15 +52,12 @@ const Produtos = () => {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  }, [isCartOpen]);
+  }, [isCartOpen, isLoadingPage]);
 
   useEffect(() => {
     localStorage.setItem("vyra_cart", JSON.stringify(cart));
   }, [cart]); 
 
-  // ==========================================
-  // LISTA DE PRODUTOS
-  // ==========================================
   const cores = [
     { pasta: "Branco", prefixo: "Branco", nome: "Branco" },
     { pasta: "Preto", prefixo: "Preto", nome: "Preto" },
@@ -75,7 +84,7 @@ const Produtos = () => {
         nomeWpp: `Camisa Vyra Performance ${cor.nome} - ${variacao.descricao}`, 
         img: `/Blusas/${cor.pasta}/${cor.prefixo} ${variacao.sufixo}.png`,
         tag: "DRY FIT",
-        preco: 12.00, // Voltei para o seu preço oficial de R$ 89,90
+        preco: 12.00, 
       });
     });
   });
@@ -171,161 +180,174 @@ const Produtos = () => {
   };
 
   return (
-    <div className={styles.container}>
-      
-      {toast.show && (
-        <div className={`${styles.toast} ${toast.type === "error" ? styles.toastError : styles.toastSuccess}`}>
-          {toast.message}
+    <>
+      {/* =========================
+          TELA DE LOADING GLOBAL
+      ========================= */}
+      {isLoadingPage && (
+        <div className={styles.globalLoaderOverlay}>
+          <div className={styles.spinner}></div>
+          <p className={styles.loadingText}>CARREGANDO COLEÇÃO...</p>
         </div>
       )}
 
-      <button className={styles.floatingCartBtn} onClick={() => setIsCartOpen(true)}>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
-        {totalItens > 0 && <span className={styles.cartBadge}>{totalItens}</span>}
-      </button>
+      <div className={styles.container}>
+        
+        {toast.show && (
+          <div className={`${styles.toast} ${toast.type === "error" ? styles.toastError : styles.toastSuccess}`}>
+            {toast.message}
+          </div>
+        )}
 
-      {isCartOpen && (
-        <div className={styles.cartOverlay} onClick={() => setIsCartOpen(false)}>
-          <div className={styles.cartSidebar} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.cartHeader}>
-              <h2>CARRINHO</h2>
-              <button className={styles.closeCartBtn} onClick={() => setIsCartOpen(false)}>✕</button>
-            </div>
+        <button className={styles.floatingCartBtn} onClick={() => setIsCartOpen(true)}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          {totalItens > 0 && <span className={styles.cartBadge}>{totalItens}</span>}
+        </button>
 
-            <div className={styles.cartItemsContainer}>
-              {cart.length === 0 ? (
-                <p className={styles.emptyCartMsg}>Seu carrinho está vazio.</p>
-              ) : (
-                cart.map((item) => (
-                  <div key={item.cartItemId} className={styles.cartItem}>
-                    <div className={styles.cartItemImgBox}>
-                      <img src={item.img} alt={item.nomeSite} className={styles.cartItemImg} />
-                    </div>
-                    <div className={styles.cartItemInfo}>
-                      <h4 title={item.nomeSite}>{item.nomeSite}</h4>
-                      <span className={styles.cartItemSize}>Tamanho: {item.tamanho}</span>
-                      <p className={styles.cartItemPrice}>R$ {item.preco.toFixed(2).replace(".", ",")}</p>
-                      
-                      <div className={styles.qtyControls}>
-                        <button onClick={() => alterarQuantidade(item.cartItemId, -1)}>-</button>
-                        <span>{item.qtd}</span>
-                        <button onClick={() => alterarQuantidade(item.cartItemId, 1)}>+</button>
-                        <button className={styles.removeBtn} onClick={() => removerItem(item.cartItemId)}>REMOVER</button>
+        {isCartOpen && (
+          <div className={styles.cartOverlay} onClick={() => setIsCartOpen(false)}>
+            <div className={styles.cartSidebar} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.cartHeader}>
+                <h2>CARRINHO</h2>
+                <button className={styles.closeCartBtn} onClick={() => setIsCartOpen(false)}>✕</button>
+              </div>
+
+              <div className={styles.cartItemsContainer}>
+                {cart.length === 0 ? (
+                  <p className={styles.emptyCartMsg}>Seu carrinho está vazio.</p>
+                ) : (
+                  cart.map((item) => (
+                    <div key={item.cartItemId} className={styles.cartItem}>
+                      <div className={styles.cartItemImgBox}>
+                        <img src={item.img} alt={item.nomeSite} className={styles.cartItemImg} />
+                      </div>
+                      <div className={styles.cartItemInfo}>
+                        <h4 title={item.nomeSite}>{item.nomeSite}</h4>
+                        <span className={styles.cartItemSize}>Tamanho: {item.tamanho}</span>
+                        <p className={styles.cartItemPrice}>R$ {item.preco.toFixed(2).replace(".", ",")}</p>
+                        
+                        <div className={styles.qtyControls}>
+                          <button onClick={() => alterarQuantidade(item.cartItemId, -1)}>-</button>
+                          <span>{item.qtd}</span>
+                          <button onClick={() => alterarQuantidade(item.cartItemId, 1)}>+</button>
+                          <button className={styles.removeBtn} onClick={() => removerItem(item.cartItemId)}>REMOVER</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
-              )}
-            </div>
-
-            {cart.length > 0 && (
-              <div className={styles.cartFooter}>
-                
-                {!podeFinalizar ? (
-                  <div className={styles.atacadoAviso}>
-                    Faltam <strong>{pecasFaltando} peças</strong> para atingir o mínimo de atacado (10).
-                  </div>
-                ) : (
-                  <div className={styles.atacadoSucesso}>
-                    ✓ Mínimo de atacado atingido!
-                  </div>
+                  ))
                 )}
-
-                <div className={styles.totalContainer}>
-                  <span>TOTAL:</span>
-                  <span>R$ {totalCarrinho.toFixed(2).replace(".", ",")}</span>
-                </div>
-                
-                <button 
-                  className={`${styles.checkoutBtn} ${!podeFinalizar ? styles.checkoutBtnDisabled : ""}`} 
-                  onClick={finalizarCompraWhatsapp}
-                >
-                  FINALIZAR COMPRA
-                </button>
               </div>
-            )}
-          </div>
-        </div>
-      )}
 
-      <main className={styles.products}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>NOSSA COLEÇÃO ATACADO</h2>
-          <div className={styles.neonLine}></div>
-          <p style={{marginTop: "1rem", color: "#888"}}>Pedido mínimo: 10 peças.</p>
-        </div>
-
-        <div className={styles.productGrid}>
-          {todosProdutos.map((produto) => {
-            const tamanhoAtual = tamanhosSelecionados[produto.id];
-            
-            // Verifica se a imagem deste produto específico já carregou
-            const isLoaded = loadedImages[produto.id];
-
-            return (
-              <div key={produto.id} className={styles.productCard}>
-                
-                <div className={styles.imagePlaceholder}>
+              {cart.length > 0 && (
+                <div className={styles.cartFooter}>
                   
-                  {/* SKELETON: Mostra a animação enquanto isLoaded for falso */}
-                  {!isLoaded && <div className={styles.skeletonLoader}></div>}
-                  
-                  {/* IMAGEM DA CAMISA */}
-                  <img
-                    src={produto.img}
-                    alt={produto.nomeSite}
-                    className={styles.productImg}
-                    loading="lazy" // Faz o navegador só carregar quando chegar perto de aparecer na tela
-                    onLoad={() => handleImageLoad(produto.id)} // Dispara quando a foto terminar de baixar
-                    style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }} // Faz a camisa surgir suavemente
-                  />
-                  
-                </div>
-
-                <div className={styles.cardContent}>
-                  
-                  <div className={styles.infoWrapper}>
-                    <div className={styles.titleGroup}>
-                      <h3 className={styles.productName}>{produto.nomeSite}</h3>
-                      <span className={styles.tag}>{produto.tag}</span>
+                  {!podeFinalizar ? (
+                    <div className={styles.atacadoAviso}>
+                      Faltam <strong>{pecasFaltando} peças</strong> para atingir o mínimo de atacado (10).
                     </div>
-                    <span className={styles.price}>
-                      R$ {produto.preco.toFixed(2).replace(".", ",")}
-                    </span>
-                  </div>
-                  
-                  <div className={styles.sizeSelector}>
-                    {opcoesTamanhos.map((tamanho) => (
-                      <button
-                        key={tamanho}
-                        onClick={() => selecionarTamanho(produto.id, tamanho)}
-                        className={`${styles.sizeBtn} ${tamanhoAtual === tamanho ? styles.activeSize : ""}`}
-                      >
-                        {tamanho}
-                      </button>
-                    ))}
+                  ) : (
+                    <div className={styles.atacadoSucesso}>
+                      ✓ Mínimo de atacado atingido!
+                    </div>
+                  )}
+
+                  <div className={styles.totalContainer}>
+                    <span>TOTAL:</span>
+                    <span>R$ {totalCarrinho.toFixed(2).replace(".", ",")}</span>
                   </div>
                   
                   <button 
-                    className={styles.addBtn}
-                    onClick={() => adicionarAoCarrinho(produto)}
+                    className={`${styles.checkoutBtn} ${!podeFinalizar ? styles.checkoutBtnDisabled : ""}`} 
+                    onClick={finalizarCompraWhatsapp}
                   >
-                    + ADICIONAR
+                    FINALIZAR COMPRA
                   </button>
-
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      </main>
+              )}
+            </div>
+          </div>
+        )}
 
-      <Footer />
-    </div>
+        <main className={styles.products}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>NOSSA COLEÇÃO ATACADO</h2>
+            <div className={styles.neonLine}></div>
+            <p style={{marginTop: "1rem", color: "#888"}}>Pedido mínimo: 10 peças.</p>
+          </div>
+
+          <div className={styles.productGrid}>
+            {todosProdutos.map((produto, index) => {
+              const tamanhoAtual = tamanhosSelecionados[produto.id];
+              const isLoaded = loadedImages[produto.id];
+
+              return (
+                <div key={produto.id} className={styles.productCard}>
+                  
+                  <div className={styles.imagePlaceholder}>
+                    
+                    {!isLoaded && <div className={styles.skeletonLoader}></div>}
+                    
+                    <img
+                      src={produto.img}
+                      alt={produto.nomeSite}
+                      className={styles.productImg}
+                      // As 4 primeiras carregam imediatamente, o resto tem carregamento preguiçoso
+                      loading={index < 4 ? "eager" : "lazy"}
+                      onLoad={() => handleImageLoad(produto.id)} 
+                      onError={(e) => {
+                        handleImageLoad(produto.id); 
+                        e.target.style.opacity = 1; 
+                      }}
+                      style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }} 
+                    />
+                    
+                  </div>
+
+                  <div className={styles.cardContent}>
+                    
+                    <div className={styles.infoWrapper}>
+                      <div className={styles.titleGroup}>
+                        <h3 className={styles.productName}>{produto.nomeSite}</h3>
+                        <span className={styles.tag}>{produto.tag}</span>
+                      </div>
+                      <span className={styles.price}>
+                        R$ {produto.preco.toFixed(2).replace(".", ",")}
+                      </span>
+                    </div>
+                    
+                    <div className={styles.sizeSelector}>
+                      {opcoesTamanhos.map((tamanho) => (
+                        <button
+                          key={tamanho}
+                          onClick={() => selecionarTamanho(produto.id, tamanho)}
+                          className={`${styles.sizeBtn} ${tamanhoAtual === tamanho ? styles.activeSize : ""}`}
+                        >
+                          {tamanho}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <button 
+                      className={styles.addBtn}
+                      onClick={() => adicionarAoCarrinho(produto)}
+                    >
+                      + ADICIONAR
+                    </button>
+
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    </>
   );
 };
 
