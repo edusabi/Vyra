@@ -75,7 +75,7 @@ const Produtos = () => {
         nomeWpp: `Camisa Vyra Performance ${cor.nome} - ${variacao.descricao}`, 
         img: `/Blusas/${cor.pasta}/${cor.prefixo} ${variacao.sufixo}.png`,
         tag: "DRY FIT",
-        preco: 89.90, // Voltei para o seu preço oficial de R$ 89,90
+        preco: 12.00, // Voltei para o seu preço oficial de R$ 89,90
       });
     });
   });
