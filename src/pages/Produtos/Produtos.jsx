@@ -10,18 +10,37 @@ const Produtos = () => {
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [tamanhosSelecionados, setTamanhosSelecionados] = useState({});
+  const [toast, setToast] = useState({ show: false, message: "", type: "error" });
   
   // ==========================================
-  // ESTADO DO TOAST (NOTIFICAÇÃO NA TELA)
+  // ESTADO PARA O CARREGAMENTO DAS IMAGENS
   // ==========================================
-  const [toast, setToast] = useState({ show: false, message: "", type: "error" });
+  const [loadedImages, setLoadedImages] = useState({});
+
+  const handleImageLoad = (produtoId) => {
+    setLoadedImages((prev) => ({
+      ...prev,
+      [produtoId]: true,
+    }));
+  };
 
   const mostrarToast = (message, type = "error") => {
     setToast({ show: true, message, type });
     setTimeout(() => {
       setToast({ show: false, message: "", type: "" });
-    }, 3000); // Some após 3 segundos
+    }, 3000); 
   };
+
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isCartOpen]);
 
   useEffect(() => {
     localStorage.setItem("vyra_cart", JSON.stringify(cart));
@@ -56,7 +75,7 @@ const Produtos = () => {
         nomeWpp: `Camisa Vyra Performance ${cor.nome} - ${variacao.descricao}`, 
         img: `/Blusas/${cor.pasta}/${cor.prefixo} ${variacao.sufixo}.png`,
         tag: "DRY FIT",
-        preco: 12.00,
+        preco: 89.90, // Voltei para o seu preço oficial de R$ 89,90
       });
     });
   });
@@ -80,7 +99,6 @@ const Produtos = () => {
   const adicionarAoCarrinho = (produto) => {
     const tamanhoEscolhido = tamanhosSelecionados[produto.id];
     
-    // Substituindo o alert() pelo Toast
     if (!tamanhoEscolhido) {
       mostrarToast("Por favor, selecione um tamanho antes de adicionar!", "error");
       return; 
@@ -98,7 +116,6 @@ const Produtos = () => {
       return [...prevCart, { ...produto, cartItemId, tamanho: tamanhoEscolhido, qtd: 1 }];
     });
 
-    // Feedback visual de sucesso
     mostrarToast("Produto adicionado ao carrinho!", "success");
   };
 
@@ -121,15 +138,10 @@ const Produtos = () => {
   const totalCarrinho = cart.reduce((acc, item) => acc + item.preco * item.qtd, 0);
   const totalItens = cart.reduce((acc, item) => acc + item.qtd, 0);
   
-  // Lógica de Atacado
   const pecasFaltando = 10 - totalItens;
   const podeFinalizar = totalItens >= 10;
 
-  // ==========================================
-  // FUNÇÃO DE REDIRECIONAMENTO PARA WHATSAPP
-  // ==========================================
   const finalizarCompraWhatsapp = () => {
-    // Validação do Atacado (Mínimo de 10 peças)
     if (!podeFinalizar) {
       mostrarToast(`O pedido mínimo é de 10 peças. Faltam ${pecasFaltando} peças.`, "error");
       return;
@@ -161,20 +173,13 @@ const Produtos = () => {
   return (
     <div className={styles.container}>
       
-      {/* =========================
-          TOAST (MENSAGEM NA TELA)
-      ========================= */}
       {toast.show && (
         <div className={`${styles.toast} ${toast.type === "error" ? styles.toastError : styles.toastSuccess}`}>
           {toast.message}
         </div>
       )}
 
-      {/* BOTÃO FLUTUANTE */}
-      <button 
-        className={styles.floatingCartBtn} 
-        onClick={() => setIsCartOpen(true)}
-      >
+      <button className={styles.floatingCartBtn} onClick={() => setIsCartOpen(true)}>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
           <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -183,7 +188,6 @@ const Produtos = () => {
         {totalItens > 0 && <span className={styles.cartBadge}>{totalItens}</span>}
       </button>
 
-      {/* SIDEBAR DO CARRINHO */}
       {isCartOpen && (
         <div className={styles.cartOverlay} onClick={() => setIsCartOpen(false)}>
           <div className={styles.cartSidebar} onClick={(e) => e.stopPropagation()}>
@@ -221,7 +225,6 @@ const Produtos = () => {
             {cart.length > 0 && (
               <div className={styles.cartFooter}>
                 
-                {/* AVISO DE ATACADO */}
                 {!podeFinalizar ? (
                   <div className={styles.atacadoAviso}>
                     Faltam <strong>{pecasFaltando} peças</strong> para atingir o mínimo de atacado (10).
@@ -249,9 +252,6 @@ const Produtos = () => {
         </div>
       )}
 
-      {/* =========================
-          PRODUTOS
-      ========================= */}
       <main className={styles.products}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>NOSSA COLEÇÃO ATACADO</h2>
@@ -262,16 +262,28 @@ const Produtos = () => {
         <div className={styles.productGrid}>
           {todosProdutos.map((produto) => {
             const tamanhoAtual = tamanhosSelecionados[produto.id];
+            
+            // Verifica se a imagem deste produto específico já carregou
+            const isLoaded = loadedImages[produto.id];
 
             return (
               <div key={produto.id} className={styles.productCard}>
                 
                 <div className={styles.imagePlaceholder}>
+                  
+                  {/* SKELETON: Mostra a animação enquanto isLoaded for falso */}
+                  {!isLoaded && <div className={styles.skeletonLoader}></div>}
+                  
+                  {/* IMAGEM DA CAMISA */}
                   <img
                     src={produto.img}
                     alt={produto.nomeSite}
                     className={styles.productImg}
+                    loading="lazy" // Faz o navegador só carregar quando chegar perto de aparecer na tela
+                    onLoad={() => handleImageLoad(produto.id)} // Dispara quando a foto terminar de baixar
+                    style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }} // Faz a camisa surgir suavemente
                   />
+                  
                 </div>
 
                 <div className={styles.cardContent}>
@@ -286,7 +298,6 @@ const Produtos = () => {
                     </span>
                   </div>
                   
-                  {/* SELETOR DE TAMANHOS */}
                   <div className={styles.sizeSelector}>
                     {opcoesTamanhos.map((tamanho) => (
                       <button

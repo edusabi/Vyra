@@ -1,85 +1,44 @@
-import React, {
-  useState,
-  useEffect
-} from 'react';
-
+import React, { useState, useEffect } from 'react';
 import styles from './Header.module.css';
-
-import {
-  NavLink
-} from 'react-router-dom';
-
+import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
-// Recebendo a prop hideBuyButton aqui
 const Header = ({ hideBuyButton }) => {
-
-  const [isMenuOpen, setIsMenuOpen] =
-    useState(false);
-
-  const [adminLogado, setAdminLogado] =
-    useState(false);
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [adminLogado, setAdminLogado] = useState(false);
 
   const verificarAdmin = async () => {
-
     try {
-
-      await axios.get(
-        'http://localhost:3000/admin/verificar',
-        {
-          withCredentials: true
-        }
-      );
-
+      await axios.get('http://localhost:3000/admin/verificar', {
+        withCredentials: true
+      });
       setAdminLogado(true);
-
     } catch {
-
       setAdminLogado(false);
-
     }
-
   };
 
   useEffect(() => {
-
     verificarAdmin();
 
-
-    window.addEventListener(
-      'adminAuthChanged',
-      verificarAdmin
-    );
+    window.addEventListener('adminAuthChanged', verificarAdmin);
 
     return () => {
-
-      window.removeEventListener(
-        'adminAuthChanged',
-        verificarAdmin
-      );
-
+      window.removeEventListener('adminAuthChanged', verificarAdmin);
     };
-
   }, []);
 
   useEffect(() => {
-
     if (isMenuOpen) {
-      document.body.style.overflow =
-        'hidden';
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow =
-        'auto';
+      document.body.style.overflow = 'auto';
     }
 
     return () => {
-      document.body.style.overflow =
-        'auto';
+      document.body.style.overflow = 'auto';
     };
-
   }, [isMenuOpen]);
-
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -90,61 +49,33 @@ const Header = ({ hideBuyButton }) => {
   };
 
   const logout = async () => {
-
     try {
-
-      await axios.post(
-        'http://localhost:3000/admin/logout',
-        {},
-        {
-          withCredentials: true
-        }
-      );
-
-      window.dispatchEvent(
-        new Event('adminAuthChanged')
-      );
-
+      await axios.post('http://localhost:3000/admin/logout', {}, {
+        withCredentials: true
+      });
+      window.dispatchEvent(new Event('adminAuthChanged'));
       window.location.href = '/';
-
     } catch (err) {
-
       console.log(err);
-
     }
-
   };
-
 
   return (
     <header className={styles.header}>
-
       {/* LOGO */}
-
       <div className={styles.logoContainer}>
-        <span className={styles.logoVyra}>
-          VYRA
-        </span>
-
-        <span className={styles.logoSub}>
-          PERFORMANCE
-        </span>
+        <span className={styles.logoVyra}>VYRA</span>
+        <span className={styles.logoSub}>PERFORMANCE</span>
       </div>
 
-
       <nav
-        className={`
-          ${styles.nav}
-          ${isMenuOpen
-            ? styles.navOpen
-            : ''
-          }
-        `}
+        className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}
       >
-
+        {/* Adicionando a verificação de isActive nos NavLinks */}
         <NavLink
           to="/"
           onClick={closeMenu}
+          className={({ isActive }) => (isActive ? styles.activeLink : '')}
         >
           Home
         </NavLink>
@@ -152,6 +83,7 @@ const Header = ({ hideBuyButton }) => {
         <NavLink
           to="/products"
           onClick={closeMenu}
+          className={({ isActive }) => (isActive ? styles.activeLink : '')}
         >
           Produtos
         </NavLink>
@@ -159,69 +91,55 @@ const Header = ({ hideBuyButton }) => {
         <NavLink
           to="/about"
           onClick={closeMenu}
+          className={({ isActive }) => (isActive ? styles.activeLink : '')}
         >
           A Marca
         </NavLink>
 
         {/* ADMIN */}
-
         {adminLogado && (
           <NavLink
             to="/login/admin"
             onClick={closeMenu}
-            className={styles.adminLink}
+            className={({ isActive }) => 
+              `${styles.adminLink} ${isActive ? styles.activeLink : ''}`
+            }
           >
             Admin
           </NavLink>
         )}
-
       </nav>
 
       {/* RIGHT ACTIONS */}
-
       <div className={styles.rightActions}>
-
         {/* SAIR */}
-
         {adminLogado && (
           <button
             onClick={logout}
             className={styles.adminBtn}
-          style={{cursor:"pointer"}}>
+            style={{ cursor: "pointer" }}
+          >
             Sair
           </button>
         )}
 
-        {/* COMPRAR - Com condicional para esconder quando necessário */}
-
+        {/* COMPRAR */}
         {!hideBuyButton && (
-          <NavLink
-            to="/products"
-            className={styles.navBtnLink}
-          >
+          <NavLink to="/products" className={styles.navBtnLink}>
             Comprar Agora
           </NavLink>
         )}
-
       </div>
 
       {/* HAMBURGER */}
-
       <div
-        className={`
-          ${styles.hamburger}
-          ${isMenuOpen
-            ? styles.hamburgerOpen
-            : ''
-          }
-        `}
+        className={`${styles.hamburger} ${isMenuOpen ? styles.hamburgerOpen : ''}`}
         onClick={toggleMenu}
       >
         <span></span>
         <span></span>
         <span></span>
       </div>
-
     </header>
   );
 };

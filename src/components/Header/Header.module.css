@@ -395,3 +395,11 @@
   }
 
 }
+
+/* =========================
+   LINK ATIVO
+========================= */
+.activeLink {
+  color: var(--vyra-neon, #a2ff00) !important;
+  font-weight: 700;
+}
