@@ -156,7 +156,7 @@ const Produtos = () => {
       return;
     }
 
-    const numeroWpp = "5581995594773"; 
+    const numeroWpp = "5581995782112"; 
     
     let mensagem = "Olá, Vyra! Gostaria de finalizar o meu pedido de *ATACADO*:\n\n";
     mensagem += "*MEU CARRINHO:*\n";
