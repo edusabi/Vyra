@@ -14,19 +14,18 @@ import About from './pages/About/About'
 import Notfound from './components/Notfound/Notfound'
 import Header from './components/Header/Header'
 import BioInsta from './pages/BioInsta/BioInsta'
+import CatalogoAtacado from './pages/CatalogoAtacado/CatalogoAtacado'
 
 function Layout() {
   const location = useLocation()
 
-  const hideHeaderRoutes = ['/linkBio']
+  const hideHeaderRoutes = ['/linkBio', "/catalogo"]
   const shouldHideHeader = hideHeaderRoutes.includes(location.pathname)
 
-  // Verifica se a rota atual é exatamente a página de produtos
   const isProductsPage = location.pathname === '/products'
 
   return (
     <>
-      {/* Passa a prop hideBuyButton como verdadeira apenas se estiver em /products */}
       {!shouldHideHeader && <Header hideBuyButton={isProductsPage} />}
 
       <Routes>
@@ -54,6 +53,11 @@ function Layout() {
         <Route
           path='/login/admin'
           element={<PainelAdmin />}
+        />
+
+        <Route
+          path='/catalogo'
+          element={<CatalogoAtacado />}
         />
 
         <Route
