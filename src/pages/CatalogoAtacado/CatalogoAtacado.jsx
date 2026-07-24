@@ -31,9 +31,8 @@ const CatalogoAtacado = () => {
   const [endereco, setEndereco] = useState(null);
   const [loadingCep, setLoadingCep] = useState(false);
 
-  // Valores base de frete (Você pode alterar aqui)
-  const TAXA_SURUBIM = 5.00; // Taxa local caso compre apenas 1 peça
-  const TAXA_CORREIOS = 25.00; // Taxa base simulada para outras cidades
+  const TAXA_SURUBIM = 5.00;
+  const TAXA_CORREIOS = 25.00;
 
   const buscarCep = async () => {
     const cepLimpo = cep.replace(/\D/g, "");
@@ -115,8 +114,8 @@ const CatalogoAtacado = () => {
         nomeSite: `Camisa Vyra Performance ${cor.nome}`, 
         nomeWpp: `Camisa Vyra Performance ${cor.nome} - ${variacao.descricao}`, 
         img: `/Blusas/${cor.pasta}/${cor.prefixo} ${variacao.sufixo}.png`,
-        tag: "DRY FIT",
-        preco: 22.00, 
+        tag: "DRY FIT"
+        // O preço base não precisa mais ser fixado aqui, pois será calculado dinamicamente
       });
     });
   });
@@ -177,17 +176,26 @@ const CatalogoAtacado = () => {
   };
 
   // ==========================================
-  // LÓGICA DE CÁLCULO DE TOTAIS E FRETE
+  // LÓGICA DE CÁLCULO DE DESCONTOS E TOTAIS
   // ==========================================
   const totalItens = cart.reduce((acc, item) => acc + item.qtd, 0);
-  const subtotalCarrinho = cart.reduce((acc, item) => acc + item.preco * item.qtd, 0);
+
+  // Define o valor de cada peça com base na quantidade total do carrinho
+  let precoUnitarioAtual = 20.00;
+  if (totalItens >= 3) {
+    precoUnitarioAtual = 18.00;
+  } else if (totalItens === 2) {
+    precoUnitarioAtual = 19.00;
+  }
+
+  // O subtotal usa o preço unitário dinâmico já com o desconto aplicado em todas as peças
+  const subtotalCarrinho = totalItens * precoUnitarioAtual;
   
   let valorFrete = 0;
   let isSurubim = false;
   let freteGratisSurubim = false;
 
   if (endereco) {
-    // Verifica se a cidade retornada na API é Surubim (ignorando maiúsculas/minúsculas)
     isSurubim = endereco.localidade.toLowerCase() === "surubim";
 
     if (isSurubim) {
@@ -195,17 +203,16 @@ const CatalogoAtacado = () => {
         valorFrete = 0;
         freteGratisSurubim = true;
       } else {
-        valorFrete = TAXA_SURUBIM; // Se for Surubim mas tiver só 1 peça
+        valorFrete = TAXA_SURUBIM; 
       }
     } else {
-      valorFrete = TAXA_CORREIOS; // Valor fixo para fora de Surubim
+      valorFrete = TAXA_CORREIOS; 
     }
   }
 
   const valorTotalFinal = subtotalCarrinho + valorFrete;
 
   const finalizarCompraWhatsapp = () => {
-    // NOVA TRAVA: Verifica se o cliente preencheu o CEP antes de prosseguir
     if (!endereco) {
       mostrarToast("Por favor, calcule o frete informando seu CEP antes de finalizar a compra!", "error");
       return;
@@ -220,8 +227,9 @@ const CatalogoAtacado = () => {
       mensagem += `\n${index + 1}. *${item.nomeWpp}*`;
       mensagem += `\n▫️ Tamanho: *${item.tamanho}*`; 
       mensagem += `\n▫️ Quantidade: ${item.qtd}`;
-      mensagem += `\n▫️ Valor Unid: R$ ${item.preco.toFixed(2).replace(".", ",")}`;
-      mensagem += `\n▫️ Subtotal: R$ ${(item.preco * item.qtd).toFixed(2).replace(".", ",")}\n`; 
+      // Usando o preço unitário com desconto
+      mensagem += `\n▫️ Valor Unid: R$ ${precoUnitarioAtual.toFixed(2).replace(".", ",")}`;
+      mensagem += `\n▫️ Subtotal: R$ ${(precoUnitarioAtual * item.qtd).toFixed(2).replace(".", ",")}\n`; 
     });
 
     mensagem += `\n=======================`;
@@ -296,7 +304,8 @@ const CatalogoAtacado = () => {
                       <div className={styles.cartItemInfo}>
                         <h4 title={item.nomeSite}>{item.nomeSite}</h4>
                         <span className={styles.cartItemSize}>Tamanho: {item.tamanho}</span>
-                        <p className={styles.cartItemPrice}>R$ {item.preco.toFixed(2).replace(".", ",")}</p>
+                        {/* Exibe o preço atualizado com desconto da unidade */}
+                        <p className={styles.cartItemPrice}>R$ {precoUnitarioAtual.toFixed(2).replace(".", ",")}</p>
                         
                         <div className={styles.qtyControls}>
                           <button onClick={() => alterarQuantidade(item.cartItemId, -1)}>-</button>
@@ -313,7 +322,6 @@ const CatalogoAtacado = () => {
               {cart.length > 0 && (
                 <div className={styles.cartFooter}>
                   
-                  {/* SESSÃO DE FRETE */}
                   <div className={styles.freteContainer}>
                     <h4 className={styles.freteTitle}>Calcular Frete</h4>
                     <div className={styles.freteInputGroup}>
@@ -356,6 +364,13 @@ const CatalogoAtacado = () => {
                     )}
                   </div>
 
+                  {/* Mostra um pequeno aviso se o cliente tiver desconto aplicado */}
+                  {totalItens >= 2 && (
+                    <div className={styles.descontoAviso} style={{ fontSize: "12px", color: "green", marginBottom: "8px", textAlign: "right" }}>
+                      ✓ Desconto de atacado aplicado ({totalItens >= 3 ? 'R$ 18/peça' : 'R$ 19/peça'})
+                    </div>
+                  )}
+
                   <div className={styles.totalContainer}>
                     <span>SUBTOTAL:</span>
                     <span>R$ {subtotalCarrinho.toFixed(2).replace(".", ",")}</span>
@@ -368,7 +383,6 @@ const CatalogoAtacado = () => {
                     </div>
                   )}
                   
-                  {/* BOTÃO FINALIZAR COM CONDICIONAL DE CLASSE */}
                   <button 
                     className={`${styles.checkoutBtn} ${!endereco ? styles.checkoutBtnDisabled : ""}`} 
                     onClick={finalizarCompraWhatsapp}
@@ -421,8 +435,10 @@ const CatalogoAtacado = () => {
                         <h3 className={styles.productName}>{produto.nomeSite}</h3>
                         <span className={styles.tag}>{produto.tag}</span>
                       </div>
+                      
+                      {/* O Preço na vitrine agora mostra de forma dinâmica se o usuário estiver ganhando desconto */}
                       <span className={styles.price}>
-                        R$ {produto.preco.toFixed(2).replace(".", ",")}
+                        R$ {precoUnitarioAtual.toFixed(2).replace(".", ",")}
                       </span>
                     </div>
                     
