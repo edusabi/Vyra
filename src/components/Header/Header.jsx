@@ -77,7 +77,7 @@ const Header = ({ hideBuyButton }) => {
           onClick={closeMenu}
           className={({ isActive }) => (isActive ? styles.activeLink : '')}
         >
-          Home
+          Inicio
         </NavLink>
 
         <NavLink
