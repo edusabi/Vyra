@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../../components/Footer/Footer";
-import styles from "./CatalogoAtacado.module.css";
+import styles from "./CatalogoVarejo.module.css";
 
 const CatalogoAtacado = () => {
   const [isLoadingPage, setIsLoadingPage] = useState(true);
@@ -25,40 +25,9 @@ const CatalogoAtacado = () => {
   const [loadedImages, setLoadedImages] = useState({});
 
   // ==========================================
-  // ESTADOS DO FRETE E CEP
+  // ESTADO DO CEP
   // ==========================================
   const [cep, setCep] = useState("");
-  const [endereco, setEndereco] = useState(null);
-  const [loadingCep, setLoadingCep] = useState(false);
-
-  const TAXA_SURUBIM = 5.00;
-  const TAXA_CORREIOS = 25.00;
-
-  const buscarCep = async () => {
-    const cepLimpo = cep.replace(/\D/g, "");
-    if (cepLimpo.length !== 8) {
-      mostrarToast("Digite um CEP válido com 8 números.", "error");
-      return;
-    }
-
-    setLoadingCep(true);
-    try {
-      const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-      const data = await response.json();
-
-      if (data.erro) {
-        mostrarToast("CEP não encontrado.", "error");
-        setEndereco(null);
-      } else {
-        setEndereco(data);
-        mostrarToast("CEP localizado com sucesso!", "success");
-      }
-    } catch (error) {
-      mostrarToast("Erro ao buscar CEP. Tente novamente.", "error");
-    } finally {
-      setLoadingCep(false);
-    }
-  };
 
   const handleImageLoad = (produtoId) => {
     setLoadedImages((prev) => ({
@@ -115,7 +84,6 @@ const CatalogoAtacado = () => {
         nomeWpp: `Camisa Vyra Performance ${cor.nome} - ${variacao.descricao}`, 
         img: `/Blusas/${cor.pasta}/${cor.prefixo} ${variacao.sufixo}.png`,
         tag: "DRY FIT"
-        // O preço base não precisa mais ser fixado aqui, pois será calculado dinamicamente
       });
     });
   });
@@ -191,68 +159,38 @@ const CatalogoAtacado = () => {
   // O subtotal usa o preço unitário dinâmico já com o desconto aplicado em todas as peças
   const subtotalCarrinho = totalItens * precoUnitarioAtual;
   
-  let valorFrete = 0;
-  let isSurubim = false;
-  let freteGratisSurubim = false;
-
-  if (endereco) {
-    isSurubim = endereco.localidade.toLowerCase() === "surubim";
-
-    if (isSurubim) {
-      if (totalItens >= 2) {
-        valorFrete = 0;
-        freteGratisSurubim = true;
-      } else {
-        valorFrete = TAXA_SURUBIM; 
-      }
-    } else {
-      valorFrete = TAXA_CORREIOS; 
-    }
-  }
-
-  const valorTotalFinal = subtotalCarrinho + valorFrete;
+  // Validação simples para ver se o CEP foi preenchido corretamente
+  const cepLimpo = cep.replace(/\D/g, "");
+  const isCepValido = cepLimpo.length === 8;
 
   const finalizarCompraWhatsapp = () => {
-    if (!endereco) {
-      mostrarToast("Por favor, calcule o frete informando seu CEP antes de finalizar a compra!", "error");
+    if (!isCepValido) {
+      mostrarToast("Por favor, informe um CEP válido com 8 números antes de finalizar!", "error");
       return;
     }
 
     const numeroWpp = "5581995782112"; 
     
-    let mensagem = "Olá, Vyra! Gostaria de finalizar o meu pedido:\n\n";
+    let mensagem = "Olá, Vyra! Gostaria de finalizar o meu pedido e verificar as opções de frete:\n\n";
     mensagem += "*MEU CARRINHO:*\n";
 
     cart.forEach((item, index) => {
       mensagem += `\n${index + 1}. *${item.nomeWpp}*`;
       mensagem += `\n▫️ Tamanho: *${item.tamanho}*`; 
       mensagem += `\n▫️ Quantidade: ${item.qtd}`;
-      // Usando o preço unitário com desconto
       mensagem += `\n▫️ Valor Unid: R$ ${precoUnitarioAtual.toFixed(2).replace(".", ",")}`;
       mensagem += `\n▫️ Subtotal: R$ ${(precoUnitarioAtual * item.qtd).toFixed(2).replace(".", ",")}\n`; 
     });
 
     mensagem += `\n=======================`;
-    
-    if (endereco) {
-      mensagem += `\n*📍 ENDEREÇO DE ENTREGA:*`;
-      mensagem += `\nCEP: ${endereco.cep}`;
-      mensagem += `\nCidade: ${endereco.localidade} - ${endereco.uf}`;
-      mensagem += `\nFrete: ${valorFrete === 0 ? "*GRÁTIS*" : `R$ ${valorFrete.toFixed(2).replace(".", ",")}`}\n`;
-      mensagem += `=======================`;
-    }
+    mensagem += `\n*📍 CEP PARA ENTREGA: ${cep}*`;
+    mensagem += `\n=======================`;
 
     mensagem += `\n*TOTAL DE PEÇAS: ${totalItens}*`;
     mensagem += `\n*SUBTOTAL PRODUTOS: R$ ${subtotalCarrinho.toFixed(2).replace(".", ",")}*`;
-    
-    if (endereco && valorFrete > 0) {
-      mensagem += `\n*VALOR FINAL (c/ Frete): R$ ${valorTotalFinal.toFixed(2).replace(".", ",")}*`;
-    } else {
-      mensagem += `\n*VALOR FINAL: R$ ${valorTotalFinal.toFixed(2).replace(".", ",")}*`;
-    }
-    
+    mensagem += `\n_(Frete a ser calculado)_`;
     mensagem += `\n=======================\n`;
-    mensagem += `\nAguardo as instruções para pagamento!`;
+    mensagem += `\nAguardo o cálculo do frete e as instruções para pagamento!`;
 
     const urlFormatada = encodeURIComponent(mensagem);
     window.open(`https://wa.me/${numeroWpp}?text=${urlFormatada}`, "_blank");
@@ -304,7 +242,6 @@ const CatalogoAtacado = () => {
                       <div className={styles.cartItemInfo}>
                         <h4 title={item.nomeSite}>{item.nomeSite}</h4>
                         <span className={styles.cartItemSize}>Tamanho: {item.tamanho}</span>
-                        {/* Exibe o preço atualizado com desconto da unidade */}
                         <p className={styles.cartItemPrice}>R$ {precoUnitarioAtual.toFixed(2).replace(".", ",")}</p>
                         
                         <div className={styles.qtyControls}>
@@ -323,48 +260,23 @@ const CatalogoAtacado = () => {
                 <div className={styles.cartFooter}>
                   
                   <div className={styles.freteContainer}>
-                    <h4 className={styles.freteTitle}>Calcular Frete</h4>
+                    <h4 className={styles.freteTitle}>Endereço de Entrega</h4>
                     <div className={styles.freteInputGroup}>
                       <input 
                         type="text" 
-                        placeholder="00000-000" 
+                        placeholder="Digite seu CEP (Ex: 00000-000)" 
                         value={cep}
                         onChange={(e) => setCep(e.target.value)}
                         maxLength="9"
                         className={styles.freteInput}
+                        style={{ width: "100%", padding: "10px", boxSizing: "border-box" }}
                       />
-                      <button onClick={buscarCep} className={styles.freteBtn}>
-                        {loadingCep ? "..." : "OK"}
-                      </button>
                     </div>
-
-                    {endereco && (
-                      <div className={styles.freteResult}>
-                        <p className={styles.cidadeText}>{endereco.localidade} - {endereco.uf}</p>
-                        <div className={styles.valorFreteBox}>
-                          <span>Valor da Entrega:</span>
-                          {valorFrete === 0 ? (
-                            <span className={styles.freteGratis}>GRÁTIS</span>
-                          ) : (
-                            <span>R$ {valorFrete.toFixed(2).replace(".", ",")}</span>
-                          )}
-                        </div>
-                        
-                        {isSurubim && !freteGratisSurubim && (
-                          <p className={styles.freteAviso}>
-                            Adicione mais {2 - totalItens} peça(s) para ter <strong>Frete Grátis</strong> em Surubim!
-                          </p>
-                        )}
-                        {!isSurubim && (
-                          <p className={styles.freteAviso}>
-                            Valor fixo estimado. O valor final pode variar.
-                          </p>
-                        )}
-                      </div>
-                    )}
+                    <p className={styles.freteAviso} style={{ fontSize: "12px", color: "#666", marginTop: "8px" }}>
+                      O valor do frete será calculado manualmente com você pelo WhatsApp.
+                    </p>
                   </div>
 
-                  {/* Mostra um pequeno aviso se o cliente tiver desconto aplicado */}
                   {totalItens >= 2 && (
                     <div className={styles.descontoAviso} style={{ fontSize: "12px", color: "green", marginBottom: "8px", textAlign: "right" }}>
                       ✓ Desconto de atacado aplicado ({totalItens >= 3 ? 'R$ 18/peça' : 'R$ 19/peça'})
@@ -376,15 +288,8 @@ const CatalogoAtacado = () => {
                     <span>R$ {subtotalCarrinho.toFixed(2).replace(".", ",")}</span>
                   </div>
                   
-                  {endereco && (
-                    <div className={styles.totalFinalContainer}>
-                      <span>TOTAL FINAL:</span>
-                      <span>R$ {valorTotalFinal.toFixed(2).replace(".", ",")}</span>
-                    </div>
-                  )}
-                  
                   <button 
-                    className={`${styles.checkoutBtn} ${!endereco ? styles.checkoutBtnDisabled : ""}`} 
+                    className={`${styles.checkoutBtn} ${!isCepValido ? styles.checkoutBtnDisabled : ""}`} 
                     onClick={finalizarCompraWhatsapp}
                   >
                     FINALIZAR COMPRA
@@ -436,7 +341,6 @@ const CatalogoAtacado = () => {
                         <span className={styles.tag}>{produto.tag}</span>
                       </div>
                       
-                      {/* O Preço na vitrine agora mostra de forma dinâmica se o usuário estiver ganhando desconto */}
                       <span className={styles.price}>
                         R$ {precoUnitarioAtual.toFixed(2).replace(".", ",")}
                       </span>

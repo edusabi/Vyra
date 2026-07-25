@@ -81,11 +81,19 @@ const Header = ({ hideBuyButton }) => {
         </NavLink>
 
         <NavLink
-          to="/products"
+          to="/atacado"
           onClick={closeMenu}
           className={({ isActive }) => (isActive ? styles.activeLink : '')}
         >
-          Produtos
+          Atacado
+        </NavLink>
+
+        <NavLink
+          to="/varejo"
+          onClick={closeMenu}
+          className={({ isActive }) => (isActive ? styles.activeLink : '')}
+        >
+          Varejo
         </NavLink>
 
         <NavLink

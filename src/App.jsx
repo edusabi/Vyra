@@ -14,12 +14,12 @@ import About from './pages/About/About'
 import Notfound from './components/Notfound/Notfound'
 import Header from './components/Header/Header'
 import BioInsta from './pages/BioInsta/BioInsta'
-import CatalogoAtacado from './pages/CatalogoAtacado/CatalogoAtacado'
+import CatalogoVarejo from './pages/CatalogoVarejo/CatalogoVarejo'
 
 function Layout() {
   const location = useLocation()
 
-  const hideHeaderRoutes = ['/linkBio', "/catalogo"]
+  const hideHeaderRoutes = ['/linkBio', "/varejo"]
   const shouldHideHeader = hideHeaderRoutes.includes(location.pathname)
 
   const isProductsPage = location.pathname === '/products'
@@ -46,7 +46,7 @@ function Layout() {
         />
 
         <Route
-          path='/products'
+          path='/atacado'
           element={<Produtos />}
         />
 
@@ -56,8 +56,8 @@ function Layout() {
         />
 
         <Route
-          path='/catalogo'
-          element={<CatalogoAtacado />}
+          path='/varejo'
+          element={<CatalogoVarejo />}
         />
 
         <Route

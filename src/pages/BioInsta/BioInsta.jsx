@@ -3,8 +3,8 @@ import styles from './BioInsta.module.css';
 
 const BioInsta = () => {
   const links = [
-    { title: '🛒 Compre Agora', url: '/products', type: 'primary' },
-    { title: 'Nosso Site', url: '/', type: 'secondary' },
+    { title: '🛒 Compre Agora', url: '/atacado', type: 'primary' },
+    { title: 'Varejo', url: '/varejo', type: 'secondary' },
     { title: 'Nosso Grupo', url: 'https://chat.whatsapp.com/Gw2wEcjTAcGDlGxFqE44WC', type: 'secondary' },
     { title: 'Fale no WhatsApp', url: 'https://wa.me/5581995782112', type: 'secondary' },
   ];
