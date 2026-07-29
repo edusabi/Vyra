@@ -133,7 +133,7 @@ const Header = ({ hideBuyButton }) => {
 
         {/* COMPRAR */}
         {!hideBuyButton && (
-          <NavLink to="/products" className={styles.navBtnLink}>
+          <NavLink to="/atacado" className={styles.navBtnLink}>
             Comprar Agora
           </NavLink>
         )}
