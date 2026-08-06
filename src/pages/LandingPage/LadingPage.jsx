@@ -130,8 +130,8 @@ const Landing = () => {
       )}
 
       <div className={styles.container}>
+        
         <main>
-
           <section className={styles.carouselSection}>
             <div className={styles.carouselContainer}>
               <button className={styles.arrowLeft} onClick={prevSlide}>
@@ -213,7 +213,9 @@ const Landing = () => {
             </div>
           </section>
 
-
+          {/* ==========================================
+              SEÇÃO DE TECNOLOGIA E ESPECIFICAÇÕES
+          ========================================== */}
           <section id="tecnologia" className={styles.features}>
             <div className={styles.featureItem}>
               <span className={styles.icon}>❄️</span>
@@ -232,9 +234,30 @@ const Landing = () => {
               <h3>ALTA RESPIRABILIDADE</h3>
               <p>Mantém o corpo seco</p>
             </div>
+            
+            {/* Novas Especificações Adicionadas */}
+            <div className={styles.featureItem}>
+              <span className={styles.icon}>⚖️</span>
+              <h3>GRAMATURA 130</h3>
+              <p>O equilíbrio perfeito de leveza</p>
+            </div>
+
+            <div className={styles.featureItem}>
+              <span className={styles.icon}>🎨</span>
+              <h3>ESTAMPA DTF</h3>
+              <p>Personalização em alta durabilidade</p>
+            </div>
+
+            <div className={styles.featureItem}>
+              <span className={styles.icon}>🪡</span>
+              <h3>ACABAMENTO PREMIUM</h3>
+              <p>Mangas com costura rebatida</p>
+            </div>
           </section>
 
-
+          {/* ==========================================
+              SEÇÃO DE PRODUTOS
+          ========================================== */}
           <section id="produtos" className={styles.products}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>NOSSA LINHA</h2>
@@ -309,11 +332,14 @@ const Landing = () => {
                   </h3>
                 </div>
               </div>
-
-              <NavLink to="/products" className={styles.ctaButton}>
-                VER MAIS...
-              </NavLink>
             </div>
+            
+            <div className={styles.ctaContainer}>
+                <NavLink to="/products" className={styles.ctaButton}>
+                  VER MAIS...
+                </NavLink>
+            </div>
+            
           </section>
         </main>
 
