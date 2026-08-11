@@ -335,7 +335,7 @@ const Landing = () => {
             </div>
             
             <div className={styles.ctaContainer}>
-                <NavLink to="/products" className={styles.ctaButton}>
+                <NavLink to="/atacado" className={styles.ctaButton}>
                   VER MAIS...
                 </NavLink>
             </div>
